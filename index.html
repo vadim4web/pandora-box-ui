@@ -27,7 +27,8 @@
       margin: 0;
       height: calc((100vmin / 3) - 6px);
       width: calc((100vmin / 3) - 6px);
-      min-width: 33ch;
+      min-width: 34ch;
+      max-width: 34ch;
     }
 
     ul {
@@ -35,7 +36,8 @@
       padding: 0;
       position: relative;
       width: 50%;
-      left: 12.5%;
+      top: -2.5%;
+      left: 5%;
       transform:
         rotateX(30deg)
         rotateY(-25deg)
@@ -47,7 +49,7 @@
       li {
         padding-left: 0.75rem;
         background: #808080;
-        box-shadow: 0 0 1px #a0a0a0;
+        box-shadow: 0 0 1px #aaa;
         color: white;
         position: relative;
         transform: translateX(0%);
@@ -56,7 +58,7 @@
 
         &::before {
           background: #606060;
-          box-shadow: 0 0 1px #888;
+          box-shadow: 0 0 1px #777;
           background-position: center;
           background-repeat: no-repeat;
           background-size: 25%;
@@ -109,7 +111,7 @@
         &:nth-child(5)::after,
         &:nth-child(6)::after {
           background: #505050;
-          box-shadow: 0 0 1px #505050;
+          box-shadow: 0 0 1px #555;
           position: absolute;
           content: "";
           height: 50%;
