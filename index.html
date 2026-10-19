@@ -46,7 +46,8 @@
       top: 50dvh;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 34ch;
+      /* Face geometry must not depend on the device's serif digit width. */
+      width: 17em;
       /* Keep the landscape artboard proportions at every viewport size. */
       height: 14.625em;
     }
@@ -112,9 +113,8 @@
           transform:
             rotateX(14.5deg)
             rotateY(60deg)
-            translateX(.125em)
-            translateY(-0.5em)
-            ;
+            translateX(0.125em)
+            translateY(-0.5em);
         }
 
         /* CMY with RGB between them: cyan, green, yellow, red, magenta, blue. */
@@ -167,11 +167,6 @@
               left 1s,
               box-shadow 1s,
               background-color 1s;
-
-            transform:
-              rotateX(14.5deg)
-              rotateY(60deg)
-              translateY(-0.5em);
           }
         }
 
