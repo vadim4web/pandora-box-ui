@@ -8,6 +8,8 @@ A CSS pseudo-3D menu, prepared for the next step: packaging `pandora-menu` as a 
 - `demo.css`: page background, viewport fitting and the six demo items' configuration.
 - `index.html`: the demo markup. Open it directly or serve this directory as a static site.
 
+The demo's stylesheet URLs include their Git blob IDs to refresh cached styles after publication. Update the matching `v` query token in `index.html` when changing a stylesheet.
+
 The component CSS does not style the host page's `body`, unrelated lists or global pseudo-elements. It inherits its font size from its container; the demo applies the responsive scale.
 
 ## Configuration
