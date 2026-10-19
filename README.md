@@ -16,6 +16,21 @@ Each item uses CSS custom properties for its icon, accent hue/lightness, optiona
 
 Set the shared `--pandora-menu-*` properties on a menu instance to adjust its neutral colors, accent saturation, hover offset or transition durations. Reduced-motion preferences disable transitions automatically.
 
+### Face lighting
+
+Neutral and highlighted items use the same lighting model. Each face is derived from that item's current front color with [`color-mix(in srgb)`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/color-mix):
+
+| Property | Default | Effect |
+| --- | --- | --- |
+| `--pandora-menu-top-light` | `15%` | Mix white into the top face. |
+| `--pandora-menu-side-shade` | `25%` | Mix black into the side face. |
+| `--pandora-menu-occlusion-shade` | `37.5%` | Mix black into sides below the highlighted item. |
+| `--pandora-menu-edge-light` | `12%` | Mix white into front and side edges. |
+
+With the default `#808080` front, the resting top is approximately `#939393`, the side `#606060`, and an occluded side `#505050`. These are color mixing weights, not percentages of physical luminance. Calculations live on each item so per-item themes and hover states recalculate all faces together.
+
+Optional exact-color overrides are `--pandora-menu-top`, `--pandora-menu-side`, `--pandora-menu-occluded-side`, and per-item `--pandora-menu-item-top`. Highlighted faces accept `--pandora-menu-accent-top-color` and `--pandora-menu-accent-side-color`. The demo uses the shared lighting ratios throughout.
+
 ## Geometry notes
 
 The menu uses `em` dimensions so its faces scale together. Keep the top-face correction `calc(100% + 0.125em - 1px)` and transform order when changing the implementation. The demo's `body` and scene both match the viewport width; mobile text inflation is controlled in `demo.css`.

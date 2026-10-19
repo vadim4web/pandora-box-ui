@@ -35,7 +35,6 @@ body {
   --pandora-menu-icon: url("icons8-home.svg");
   --pandora-menu-accent-hue: 180;
   --pandora-menu-accent-lightness: 28%;
-  --pandora-menu-item-top: #707070;
 }
 
 .demo-scene .pandora-menu__item:nth-child(2) {
@@ -50,7 +49,6 @@ body {
   --pandora-menu-icon: url("icons8-services.svg");
   --pandora-menu-accent-hue: 60;
   --pandora-menu-accent-lightness: 26%;
-  --pandora-menu-accent-top: 46%;
 }
 
 .demo-scene .pandora-menu__item:nth-child(4) {
