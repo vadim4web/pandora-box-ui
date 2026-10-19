@@ -8,10 +8,6 @@
 
   <style>
     :root {
-      zoom: 3 !important;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       background: radial-gradient(
         circle at center,
         #808080 0%,
@@ -26,17 +22,33 @@
     }
 
     body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100svh;
+      min-height: 100dvh;
+      overflow: hidden;
+    }
+
+    .scene {
+      /* Scale every face and offset together, up to the original 3x size. */
+      font-size: min(3rem, calc((100vw - 2rem) / 10), calc((100vh - 2rem) / 10.5));
+      font-size: min(3rem, calc((100vw - 2rem) / 10), calc((100svh - 2rem) / 10.5));
       font-family: 'Times New Roman', Times, serif;
       font-weight: bolder;
+      /* Original landscape line box: 55px at a 48px font size. */
+      line-height: calc(55 / 48);
       letter-spacing: 0.075ch;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0;
-      height: calc((100vmin / 3) - 6px);
-      width: calc((100vmin / 3) - 6px);
-      min-width: 34ch;
-      max-width: 34ch;
+      position: fixed;
+      top: 50%;
+      top: 50dvh;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 34ch;
+      /* Keep the landscape artboard proportions at every viewport size. */
+      height: 14.625em;
     }
 
     ul {
@@ -55,11 +67,11 @@
         scaleY(1);
 
       li {
-        padding-left: 0.75rem;
+        padding-left: 0.75em;
 
         /* Front face — default */
         background: #808080;
-        box-shadow: 0 0 1px #aaa;
+        box-shadow: 0 0 0.0625em #aaa;
         color: white;
 
         position: relative;
@@ -80,7 +92,7 @@
             filter 1s;
 
           background-color: #606060;
-          box-shadow: 0 0 1px #777;
+          box-shadow: 0 0 0.0625em #777;
 
           background-position: center;
           background-repeat: no-repeat;
@@ -100,66 +112,53 @@
           transform:
             rotateX(14.5deg)
             rotateY(60deg)
-            translateY(-8px);
+            translateX(.125em)
+            translateY(-0.5em)
+            ;
         }
 
-        /* Individual hover colors — front faces */
-        &:nth-child(1):hover {
-          background: hsl(120, 40%, 45%);
+        /* CMY with RGB between them: cyan, green, yellow, red, magenta, blue. */
+        --highlight-top: calc(var(--highlight-lightness) + 14%);
+
+        &:nth-child(1) {
+          --highlight-hue: 180;
+          --highlight-lightness: 28%;
         }
 
-        &:nth-child(2):hover {
-          background: hsl(156, 40%, 45%);
+        &:nth-child(2) {
+          --highlight-hue: 120;
+          --highlight-lightness: 30%;
         }
 
-        &:nth-child(3):hover {
-          background: hsl(192, 40%, 45%);
+        &:nth-child(3) {
+          --highlight-hue: 60;
+          --highlight-lightness: 26%;
+          --highlight-top: 52%;
         }
 
-        &:nth-child(4):hover {
-          background: hsl(228, 40%, 45%);
+        &:nth-child(4) {
+          --highlight-hue: 0;
+          --highlight-lightness: 48%;
         }
 
-        &:nth-child(5):hover {
-          background: hsl(264, 40%, 45%);
+        &:nth-child(5) {
+          --highlight-hue: 300;
+          --highlight-lightness: 43%;
         }
 
-        &:nth-child(6):hover {
-          background: hsl(300, 40%, 45%);
-        }
-
-        /* Individual hover colors — left side faces */
-        &:nth-child(1):hover::before {
-          background-color: hsl(120, 40%, 35%);
-        }
-
-        &:nth-child(2):hover::before {
-          background-color: hsl(156, 40%, 35%);
-        }
-
-        &:nth-child(3):hover::before {
-          background-color: hsl(192, 40%, 35%);
-        }
-
-        &:nth-child(4):hover::before {
-          background-color: hsl(228, 40%, 35%);
-        }
-
-        &:nth-child(5):hover::before {
-          background-color: hsl(264, 40%, 35%);
-        }
-
-        &:nth-child(6):hover::before {
-          background-color: hsl(300, 40%, 35%);
+        &:nth-child(6) {
+          --highlight-hue: 240;
+          --highlight-lightness: 62%;
         }
 
         /* Move only the hovered block */
         &:hover {
+          background-color: hsl(var(--highlight-hue), 80%, var(--highlight-lightness));
           transform: translateX(-8%);
-          transition: transform 0.857s;
 
           &::before {
-            box-shadow: 0 0 1px #204030;
+            background-color: hsl(var(--highlight-hue), 80%, calc(var(--highlight-lightness) - 9%));
+            box-shadow: 0 0 0.0625em hsl(var(--highlight-hue), 80%, calc(var(--highlight-lightness) - 18%));
             background-position: center;
             background-repeat: no-repeat;
             background-size: 25%;
@@ -172,7 +171,7 @@
             transform:
               rotateX(14.5deg)
               rotateY(60deg)
-              translateY(-8px);
+              translateY(-0.5em);
           }
         }
 
@@ -199,12 +198,13 @@
         /* Top faces */
         &::after {
           background: #555;
-          box-shadow: 0 0 1px #555;
+          box-shadow: 0 0 0.0625em #555;
+          transition: background-color 1s, box-shadow 1s;
 
           position: absolute;
           content: "";
           height: 50%;
-          width: calc(100% + 2px);
+          width: calc(100% + 0.125em);
           top: -26%;
           left: 29%;
 
@@ -215,7 +215,7 @@
             scaleX(1.29)
             scaleY(6)
             translateY(160%)
-            translateZ(-17px);
+            translateZ(-1.0625em);
         }
 
         /* Icons */
@@ -260,6 +260,11 @@
         &:nth-child(4)::after { z-index: 3; }
         &:nth-child(5)::after { z-index: 2; }
         &:nth-child(6)::after { z-index: 1; }
+
+        &:hover::after {
+          background-color: hsl(var(--highlight-hue), 80%, var(--highlight-top));
+          box-shadow: 0 0 0.0625em hsl(var(--highlight-hue), 80%, var(--highlight-top));
+        }
       }
 
       /* Ground shadow */
@@ -269,9 +274,9 @@
         content: "";
 
         height: 50%;
-        width: calc(100% + 2px);
+        width: calc(100% + 0.125em);
         top: 100%;
-        left: -1px;
+        left: -0.0625em;
 
         transition: transform 0.75s;
 
@@ -283,11 +288,11 @@
           scaleY(0.9)
           translateX(13.5%)
           translateY(100%)
-          translateZ(-13px)
+          translateZ(-0.8125em)
           scaleX(1.2)
           scaleY(1.2);
 
-        filter: blur(0.75rem);
+        filter: blur(0.75em);
       }
 
       /* Ground shadow on hover */
@@ -302,7 +307,7 @@
           scaleY(0.9)
           translateX(9%)
           translateY(100%)
-          translateZ(-13px)
+          translateZ(-0.8125em)
           scaleX(1.2)
           scaleY(1.2);
       }
@@ -311,13 +316,15 @@
 </head>
 
 <body>
-  <ul>
-    <li>Home</li>
-    <li>About</li>
-    <li>Service</li>
-    <li>Portfolio</li>
-    <li>Our Team</li>
-    <li>Contact</li>
-  </ul>
+  <main class="scene" aria-label="Main menu">
+    <ul>
+      <li>Home</li>
+      <li>About</li>
+      <li>Service</li>
+      <li>Portfolio</li>
+      <li>Our Team</li>
+      <li>Contact</li>
+    </ul>
+  </main>
 </body>
 </html>
