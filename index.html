@@ -1,21 +1,29 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pseudo-3D CSS Menu</title>
-<style>
+
+  <style>
     :root {
       zoom: 3 !important;
       display: flex;
       align-items: center;
       justify-content: center;
-      background:
-        radial-gradient(circle at center, #808080 0%, #202020 100%)
-        ;
+      background: radial-gradient(
+        circle at center,
+        #808080 0%,
+        #202020 100%
+      );
     }
 
-    body *, ::before, ::after { box-sizing: border-box; }
+    body *,
+    ::before,
+    ::after {
+      box-sizing: border-box;
+    }
 
     body {
       font-family: 'Times New Roman', Times, serif;
@@ -38,74 +46,149 @@
       width: 50%;
       top: -2.5%;
       left: 5%;
+
       transform:
         rotateX(30deg)
         rotateY(-25deg)
         rotateZ(13deg)
         scaleX(0.66)
-        scaleY(1)
-        ;
+        scaleY(1);
 
       li {
         padding-left: 0.75rem;
+
+        /* Front face — default */
         background: #808080;
         box-shadow: 0 0 1px #aaa;
         color: white;
+
         position: relative;
         transform: translateX(0%);
-        transition: transform 0.857s;
+
+        transition:
+          transform 0.857s,
+          background-color 1s;
+
         cursor: pointer;
 
+        /* Left side face */
         &::before {
-          transition: left 1s, box-shadow 1s, background-color 1s;
-          background: #606060;
+          transition:
+            left 1s,
+            box-shadow 1s,
+            background-color 1s,
+            filter 1s;
+
+          background-color: #606060;
           box-shadow: 0 0 1px #777;
+
           background-position: center;
           background-repeat: no-repeat;
           background-size: 25%;
+
           position: absolute;
           content: "";
           width: 50%;
           height: 100%;
           left: -38%;
+
           display: inline-flex;
           align-items: center;
           justify-content: center;
           line-height: 1;
+
           transform:
             rotateX(14.5deg)
             rotateY(60deg)
-            translateY(-8px)
-            ;
+            translateY(-8px);
         }
 
+        /* Individual hover colors — front faces */
+        &:nth-child(1):hover {
+          background: hsl(120, 40%, 45%);
+        }
+
+        &:nth-child(2):hover {
+          background: hsl(156, 40%, 45%);
+        }
+
+        &:nth-child(3):hover {
+          background: hsl(192, 40%, 45%);
+        }
+
+        &:nth-child(4):hover {
+          background: hsl(228, 40%, 45%);
+        }
+
+        &:nth-child(5):hover {
+          background: hsl(264, 40%, 45%);
+        }
+
+        &:nth-child(6):hover {
+          background: hsl(300, 40%, 45%);
+        }
+
+        /* Individual hover colors — left side faces */
+        &:nth-child(1):hover::before {
+          background-color: hsl(120, 40%, 35%);
+        }
+
+        &:nth-child(2):hover::before {
+          background-color: hsl(156, 40%, 35%);
+        }
+
+        &:nth-child(3):hover::before {
+          background-color: hsl(192, 40%, 35%);
+        }
+
+        &:nth-child(4):hover::before {
+          background-color: hsl(228, 40%, 35%);
+        }
+
+        &:nth-child(5):hover::before {
+          background-color: hsl(264, 40%, 35%);
+        }
+
+        &:nth-child(6):hover::before {
+          background-color: hsl(300, 40%, 35%);
+        }
+
+        /* Move only the hovered block */
         &:hover {
-          background: #60a070;
           transform: translateX(-8%);
-          transition: transform .857s;
+          transition: transform 0.857s;
+
           &::before {
-            background: #204030;
             box-shadow: 0 0 1px #204030;
             background-position: center;
             background-repeat: no-repeat;
             background-size: 25%;
-            transition: left 1s, box-shadow 1s, background-color 1s;
+
+            transition:
+              left 1s,
+              box-shadow 1s,
+              background-color 1s;
+
             transform:
               rotateX(14.5deg)
               rotateY(60deg)
-              translateY(-8px)
-              ;
+              translateY(-8px);
           }
         }
 
-        /* Вибір усіх li, які йдуть ПІСЛЯ елемента у стані hover */
-        &:hover ~ li {
-          &::before {
-            /* Змінюємо лише колір фону, зберігаючи іконку та інші параметри */
-            background-color: #454545; 
-          }
+        /*
+         * SHADOW FIX
+         *
+         * Darken ONLY the left side faces (::before)
+         * of the following sibling elements.
+         *
+         * Their front faces remain unchanged.
+         */
+        &:hover ~ li::before {
+          background-color: #505050;
         }
 
+        /* Stacking order */
         &:nth-child(1) { z-index: 6; }
         &:nth-child(2) { z-index: 5; }
         &:nth-child(3) { z-index: 4; }
@@ -113,20 +196,18 @@
         &:nth-child(5) { z-index: 2; }
         &:nth-child(6) { z-index: 1; }
 
-        &:nth-child(1)::after,
-        &:nth-child(2)::after,
-        &:nth-child(3)::after,
-        &:nth-child(4)::after,
-        &:nth-child(5)::after,
-        &:nth-child(6)::after {
-          background: #505050;
+        /* Top faces */
+        &::after {
+          background: #555;
           box-shadow: 0 0 1px #555;
+
           position: absolute;
           content: "";
           height: 50%;
           width: calc(100% + 2px);
           top: -26%;
           left: 29%;
+
           transform:
             rotateX(102deg)
             rotateY(10deg)
@@ -134,35 +215,46 @@
             scaleX(1.29)
             scaleY(6)
             translateY(160%)
-            translateZ(-17px)
-            ;
+            translateZ(-17px);
         }
 
+        /* Icons */
         &:nth-child(1)::before {
           z-index: 6;
           background-image: url("icons8-home.svg");
         }
+
         &:nth-child(2)::before {
           z-index: 5;
           background-image: url("icons8-info.svg");
         }
+
         &:nth-child(3)::before {
           z-index: 4;
           background-image: url("icons8-services.svg");
         }
+
         &:nth-child(4)::before {
           z-index: 3;
-          background-image: url("icons8-briefcase.svg"); }
+          background-image: url("icons8-briefcase.svg");
+        }
+
         &:nth-child(5)::before {
           z-index: 2;
           background-image: url("icons8-team.svg");
         }
+
         &:nth-child(6)::before {
           z-index: 1;
           background-image: url("icons8-contacts.svg");
         }
 
-        &:nth-child(1)::after { z-index: 6; background: #707070; }
+        /* Top face stacking */
+        &:nth-child(1)::after {
+          z-index: 6;
+          background: #707070;
+        }
+
         &:nth-child(2)::after { z-index: 5; }
         &:nth-child(3)::after { z-index: 4; }
         &:nth-child(4)::after { z-index: 3; }
@@ -170,48 +262,54 @@
         &:nth-child(6)::after { z-index: 1; }
       }
 
+      /* Ground shadow */
       &::before {
-          background: #202020;
-          position: absolute;
-          content: "";
-          height: 50%;
-          width: calc(100% + 2px);
-          top: 100%;
-          left: -1px;
-          transition: transform 0.75s;
-          transform:
-            rotateX(102deg)
-            rotateY(10deg)
-            rotateZ(39deg)
-            scaleX(1.29)
-            scaleY(0.9)
-            translateX(13.5%)
-            translateY(100%)
-            translateZ(-13px)
-            scaleX(1.2)
-            scaleY(1.2)
-            ;
-          filter: blur(0.75rem);
+        background: #202020;
+        position: absolute;
+        content: "";
+
+        height: 50%;
+        width: calc(100% + 2px);
+        top: 100%;
+        left: -1px;
+
+        transition: transform 0.75s;
+
+        transform:
+          rotateX(102deg)
+          rotateY(10deg)
+          rotateZ(39deg)
+          scaleX(1.29)
+          scaleY(0.9)
+          translateX(13.5%)
+          translateY(100%)
+          translateZ(-13px)
+          scaleX(1.2)
+          scaleY(1.2);
+
+        filter: blur(0.75rem);
       }
 
+      /* Ground shadow on hover */
       &:has(:hover)::before {
         transition: transform 0.75s;
+
         transform:
-            rotateX(102deg)
-            rotateY(10deg)
-            rotateZ(39deg)
-            scaleX(1.37)
-            scaleY(0.9)
-            translateX(9%)
-            translateY(100%)
-            translateZ(-13px)
-            scaleX(1.2)
-            scaleY(1.2)
-            ;
+          rotateX(102deg)
+          rotateY(10deg)
+          rotateZ(39deg)
+          scaleX(1.37)
+          scaleY(0.9)
+          translateX(9%)
+          translateY(100%)
+          translateZ(-13px)
+          scaleX(1.2)
+          scaleY(1.2);
       }
     }
   </style>
 </head>
+
 <body>
   <ul>
     <li>Home</li>
