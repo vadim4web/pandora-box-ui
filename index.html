@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pseudo-3D CSS Menu</title>
-  <style>
+<style>
     :root {
       zoom: 3 !important;
       display: flex;
@@ -57,6 +57,7 @@
         cursor: pointer;
 
         &::before {
+          transition: left 1s, box-shadow 1s, background-color 1s;
           background: #606060;
           box-shadow: 0 0 1px #777;
           background-position: center;
@@ -88,12 +89,20 @@
             background-position: center;
             background-repeat: no-repeat;
             background-size: 25%;
-            transition: left 1s, box-shadow 1s;
+            transition: left 1s, box-shadow 1s, background-color 1s;
             transform:
               rotateX(14.5deg)
               rotateY(60deg)
               translateY(-8px)
               ;
+          }
+        }
+
+        /* Вибір усіх li, які йдуть ПІСЛЯ елемента у стані hover */
+        &:hover ~ li {
+          &::before {
+            /* Змінюємо лише колір фону, зберігаючи іконку та інші параметри */
+            background-color: #454545; 
           }
         }
 
