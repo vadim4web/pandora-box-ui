@@ -91,7 +91,7 @@
   z-index: inherit;
   content: "";
   top: -26%;
-  left: 29%;
+  left: calc(29% + 1px);
   height: 50%;
   width: calc(100% + 0.125em - 1px);
   background: var(--_pandora-menu-top);
