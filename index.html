@@ -8,6 +8,9 @@
 
   <style>
     :root {
+      width: 100%;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
       background: radial-gradient(
         circle at center,
         #808080 0%,
@@ -23,6 +26,8 @@
 
     body {
       margin: 0;
+      width: 100%;
+      min-width: 0;
       min-height: 100vh;
       min-height: 100svh;
       min-height: 100dvh;
@@ -42,23 +47,21 @@
       align-items: center;
       justify-content: center;
       position: fixed;
-      top: 50%;
-      top: 50dvh;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      /* Face geometry must not depend on the device's serif digit width. */
-      width: 17em;
-      /* Keep the landscape artboard proportions at every viewport size. */
-      height: 14.625em;
+      inset: 0;
+      width: 100%;
+      height: 100vh;
+      height: 100dvh;
     }
 
     ul {
       list-style: none;
       padding: 0;
       position: relative;
-      width: 50%;
-      top: -2.5%;
-      left: 5%;
+      flex-shrink: 0;
+      /* Preserve the original geometry inside a viewport-sized container. */
+      width: 8.5em;
+      top: -0.365625em;
+      left: 0.85em;
 
       transform:
         rotateX(30deg)
