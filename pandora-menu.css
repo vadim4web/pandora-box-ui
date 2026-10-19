@@ -1,0 +1,157 @@
+.pandora-menu,
+.pandora-menu::before,
+.pandora-menu__item,
+.pandora-menu__item::before,
+.pandora-menu__item::after {
+  box-sizing: border-box;
+}
+
+.pandora-menu {
+  --pandora-menu-front: #808080;
+  --pandora-menu-side: #606060;
+  --pandora-menu-top: #555;
+  --pandora-menu-text: white;
+  --pandora-menu-ground: #202020;
+  --pandora-menu-occluded-side: #505050;
+  --pandora-menu-accent-hue: 180;
+  --pandora-menu-accent-lightness: 28%;
+  --pandora-menu-accent-saturation: 80%;
+  --pandora-menu-hover-offset: -8%;
+  --pandora-menu-move-duration: 0.857s;
+  --pandora-menu-color-duration: 1s;
+  --pandora-menu-shadow-duration: 0.75s;
+
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: bolder;
+  /* Original landscape line box: 55px at a 48px font size. */
+  line-height: calc(55 / 48);
+  letter-spacing: 0.075ch;
+  list-style: none;
+  margin: 1em 0;
+  padding: 0;
+  position: relative;
+  flex-shrink: 0;
+  width: 8.5em;
+  top: -0.365625em;
+  left: 0.85em;
+  transform: rotateX(30deg) rotateY(-25deg) rotateZ(13deg) scaleX(0.66);
+}
+
+.pandora-menu__item {
+  --pandora-menu-accent-top: calc(var(--pandora-menu-accent-lightness) + 10%);
+
+  position: relative;
+  z-index: var(--pandora-menu-layer, 1);
+  padding-left: 0.75em;
+  background: var(--pandora-menu-front);
+  box-shadow: 0 0 0.0625em #aaa;
+  color: var(--pandora-menu-text);
+  transform: translateX(0%);
+  transition:
+    transform var(--pandora-menu-move-duration),
+    background-color var(--pandora-menu-color-duration);
+  cursor: pointer;
+}
+
+/* Side faces share their item's stacking order and geometry in every state. */
+.pandora-menu__item::before {
+  position: absolute;
+  z-index: inherit;
+  content: "";
+  top: 0;
+  left: -38%;
+  width: 50%;
+  height: 100%;
+  background-color: var(--pandora-menu-side);
+  background-image: var(--pandora-menu-icon, none);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 25%;
+  box-shadow: 0 0 0.0625em #777;
+  transition:
+    box-shadow var(--pandora-menu-color-duration),
+    background-color var(--pandora-menu-color-duration);
+  transform:
+    rotateX(14.5deg)
+    rotateY(60deg)
+    translateX(0.125em)
+    translateY(-0.5em);
+}
+
+.pandora-menu__item::after {
+  position: absolute;
+  z-index: inherit;
+  content: "";
+  top: -26%;
+  left: 29%;
+  height: 50%;
+  width: calc(100% + 0.125em - 1px);
+  background: var(--pandora-menu-item-top, var(--pandora-menu-top));
+  box-shadow: 0 0 0.0625em var(--pandora-menu-top);
+  transition:
+    background-color var(--pandora-menu-color-duration),
+    box-shadow var(--pandora-menu-color-duration);
+  transform:
+    rotateX(102deg)
+    rotateY(10deg)
+    rotateZ(39deg)
+    scaleX(1.29)
+    scaleY(6)
+    translateY(160%)
+    translateZ(-1.0625em);
+}
+
+.pandora-menu__item:hover {
+  background-color: hsl(var(--pandora-menu-accent-hue), var(--pandora-menu-accent-saturation), var(--pandora-menu-accent-lightness));
+  transform: translateX(var(--pandora-menu-hover-offset));
+}
+
+.pandora-menu__item:hover::before {
+  background-color: hsl(var(--pandora-menu-accent-hue), var(--pandora-menu-accent-saturation), calc(var(--pandora-menu-accent-lightness) - 9%));
+  box-shadow: 0 0 0.0625em hsl(var(--pandora-menu-accent-hue), var(--pandora-menu-accent-saturation), calc(var(--pandora-menu-accent-lightness) - 18%));
+}
+
+.pandora-menu__item:hover::after {
+  background-color: hsl(var(--pandora-menu-accent-hue), var(--pandora-menu-accent-saturation), var(--pandora-menu-accent-top));
+  box-shadow: 0 0 0.0625em hsl(var(--pandora-menu-accent-hue), var(--pandora-menu-accent-saturation), var(--pandora-menu-accent-top));
+}
+
+.pandora-menu__item:hover ~ .pandora-menu__item::before {
+  background-color: var(--pandora-menu-occluded-side);
+}
+
+.pandora-menu::before {
+  position: absolute;
+  content: "";
+  top: 100%;
+  left: -0.0625em;
+  height: 50%;
+  width: calc(100% + 0.125em);
+  background: var(--pandora-menu-ground);
+  filter: blur(0.75em);
+  transition: transform var(--pandora-menu-shadow-duration);
+  transform:
+    rotateX(102deg)
+    rotateY(10deg)
+    rotateZ(39deg)
+    scaleX(var(--pandora-menu-shadow-scale, 1.29))
+    scaleY(0.9)
+    translateX(var(--pandora-menu-shadow-shift, 13.5%))
+    translateY(100%)
+    translateZ(-0.8125em)
+    scaleX(1.2)
+    scaleY(1.2);
+}
+
+.pandora-menu:has(.pandora-menu__item:hover)::before {
+  --pandora-menu-shadow-scale: 1.37;
+  --pandora-menu-shadow-shift: 9%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pandora-menu {
+    --pandora-menu-move-duration: 0s;
+    --pandora-menu-color-duration: 0s;
+    --pandora-menu-shadow-duration: 0s;
+  }
+}

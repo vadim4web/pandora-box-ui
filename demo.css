@@ -1,0 +1,75 @@
+:root {
+  width: 100%;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  background: radial-gradient(circle at center, #808080 0%, #202020 100%);
+}
+
+body {
+  margin: 0;
+  width: 100%;
+  min-width: 0;
+  min-height: 100vh;
+  min-height: 100svh;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+.demo-scene {
+  /* Scale the entire menu together, up to the original 3x size. */
+  font-size: min(3rem, calc((100vw - 2rem) / 10), calc((100vh - 2rem) / 10.5));
+  font-size: min(3rem, calc((100vw - 2rem) / 10), calc((100svh - 2rem) / 10.5));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* CMY with RGB between them; each item's appearance lives in one place. */
+.demo-scene .pandora-menu__item:nth-child(1) {
+  --pandora-menu-layer: 6;
+  --pandora-menu-icon: url("icons8-home.svg");
+  --pandora-menu-accent-hue: 180;
+  --pandora-menu-accent-lightness: 28%;
+  --pandora-menu-item-top: #707070;
+}
+
+.demo-scene .pandora-menu__item:nth-child(2) {
+  --pandora-menu-layer: 5;
+  --pandora-menu-icon: url("icons8-info.svg");
+  --pandora-menu-accent-hue: 120;
+  --pandora-menu-accent-lightness: 30%;
+}
+
+.demo-scene .pandora-menu__item:nth-child(3) {
+  --pandora-menu-layer: 4;
+  --pandora-menu-icon: url("icons8-services.svg");
+  --pandora-menu-accent-hue: 60;
+  --pandora-menu-accent-lightness: 26%;
+  --pandora-menu-accent-top: 46%;
+}
+
+.demo-scene .pandora-menu__item:nth-child(4) {
+  --pandora-menu-layer: 3;
+  --pandora-menu-icon: url("icons8-briefcase.svg");
+  --pandora-menu-accent-hue: 0;
+  --pandora-menu-accent-lightness: 48%;
+}
+
+.demo-scene .pandora-menu__item:nth-child(5) {
+  --pandora-menu-layer: 2;
+  --pandora-menu-icon: url("icons8-team.svg");
+  --pandora-menu-accent-hue: 300;
+  --pandora-menu-accent-lightness: 43%;
+}
+
+.demo-scene .pandora-menu__item:nth-child(6) {
+  --pandora-menu-layer: 1;
+  --pandora-menu-icon: url("icons8-contacts.svg");
+  --pandora-menu-accent-hue: 240;
+  --pandora-menu-accent-lightness: 62%;
+}
