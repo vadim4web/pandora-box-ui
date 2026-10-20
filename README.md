@@ -39,4 +39,6 @@ The menu uses `em` dimensions so its faces scale together. Keep the top-face cor
 
 Adjacent items overlap by `--pandora-menu-item-overlap` (default `1px`). Set it to `0px` for the original spacing, or adjust it on a menu instance to tune row density.
 
+Hover translates the complete item, including both pseudo-element faces. `--pandora-menu-hover-offset` defaults to `-5%` of the item's width and controls the shared slide distance.
+
 Navigation destinations, keyboard interaction, dynamic item generation and package exports belong to the library implementation step.
