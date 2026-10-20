@@ -128,7 +128,9 @@
   height: 50%;
   width: calc(100% + 0.125em);
   background: var(--pandora-menu-ground);
-  filter: blur(0.75em);
+  border-radius: 50%;
+  opacity: 0.85;
+  filter: blur(0.85em);
   transition: transform var(--pandora-menu-shadow-duration);
   transform:
     rotateX(102deg)
