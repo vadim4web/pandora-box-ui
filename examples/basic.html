@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PandoraBox UI — static HTML example</title>
+  <!-- During local development; after copying the file, adjust this relative URL. -->
+  <link rel="stylesheet" href="../dist/pandora-box-ui.css">
+  <style>
+    body { display: grid; place-items: center; min-height: 100vh; margin: 0; background: radial-gradient(circle, #535863, #151820); }
+    .my-navigation { padding: 90px 80px 90px 100px; }
+    /* Example user configuration — paste the CSS exported from the Playground here. */
+    .my-navigation .pb-menu {
+      --pb-menu-font-size: 44px;
+      --pb-menu-hover-offset: -5%;
+    }
+  </style>
+</head>
+<body>
+<nav class="my-navigation" aria-label="Main navigation">
+  <ul class="pb-menu" data-pb-metal="titanium" data-pb-palette="aurora">
+    <li class="pb-menu__item"><a href="#home" class="pb-menu__link"><span class="pb-menu__label">Home</span></a></li>
+    <li class="pb-menu__item"><a href="#work" class="pb-menu__link"><span class="pb-menu__label">Work</span></a></li>
+    <li class="pb-menu__item"><a href="#lab" class="pb-menu__link"><span class="pb-menu__label">Lab</span></a></li>
+    <li class="pb-menu__item"><a href="#about" class="pb-menu__link"><span class="pb-menu__label">About</span></a></li>
+    <li class="pb-menu__item"><a href="#contact" class="pb-menu__link"><span class="pb-menu__label">Contact</span></a></li>
+  </ul>
+</nav>
+</body>
+</html>

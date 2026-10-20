@@ -1,0 +1,24 @@
+{
+  "format": "pandora-box-ui",
+  "version": 3,
+  "state": {
+    "metal": "steel",
+    "palette": "ocean",
+    "itemCount": 2,
+    "textMode": "normal",
+    "iconMode": "normal",
+    "maskScale": 1,
+    "maskX": 50,
+    "maskY": 50,
+    "maskOpacity": 1,
+    "textIdle": "#f4f7ff",
+    "textHover": "#ffffff",
+    "iconIdle": "#c6d8f5",
+    "iconHover": "#ffffff",
+    "items": [
+      {"label": "Home", "url": "/", "mask": null, "variables": {}},
+      {"label": "Projects", "url": "/projects", "mask": null, "variables": {}}
+    ]
+  },
+  "variables": {"--pb-menu-font-size": "44px"}
+}

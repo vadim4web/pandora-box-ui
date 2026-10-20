@@ -1,0 +1,3 @@
+/* Backwards-compatible import PATH only. v0.1.4: use data-pb-metal + data-pb-palette. */
+@import url("./pandora-metals.css");
+@import url("./pandora-palettes.css");

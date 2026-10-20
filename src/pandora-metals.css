@@ -1,0 +1,94 @@
+/* PandoraBox UI — independent IDLE metal finishes v0.1.6.
+ * These tokens affect the menu at rest, regardless of hover palette.
+ * Example: <ul class="pb-menu" data-pb-metal="copper" data-pb-palette="rainbow">.
+ */
+
+/* STEEL */
+.pb-menu[data-pb-metal="steel"] {
+  --pb-menu-front: #808080;
+  --pb-menu-top-light: 15%;
+  --pb-menu-side-shade: 25%;
+  --pb-menu-edge-light: 12%;
+  --pb-menu-text: #ffffff;
+}
+
+/* SILVER */
+.pb-menu[data-pb-metal="silver"] {
+  --pb-menu-front: #b7bec6;
+  --pb-menu-top-light: 19%;
+  --pb-menu-side-shade: 29%;
+  --pb-menu-edge-light: 20%;
+  --pb-menu-text: #151e2a;
+}
+
+/* CHROME */
+.pb-menu[data-pb-metal="chrome"] {
+  --pb-menu-front: #9aabbc;
+  --pb-menu-top-light: 30%;
+  --pb-menu-side-shade: 35%;
+  --pb-menu-edge-light: 27%;
+  --pb-menu-text: #111b27;
+}
+
+/* TITANIUM */
+.pb-menu[data-pb-metal="titanium"] {
+  --pb-menu-front: #747e92;
+  --pb-menu-top-light: 18%;
+  --pb-menu-side-shade: 33%;
+  --pb-menu-edge-light: 18%;
+  --pb-menu-text: #ffffff;
+}
+
+/* GRAPHITE */
+.pb-menu[data-pb-metal="graphite"] {
+  --pb-menu-front: #49515d;
+  --pb-menu-top-light: 16%;
+  --pb-menu-side-shade: 37%;
+  --pb-menu-edge-light: 18%;
+  --pb-menu-text: #ffffff;
+}
+
+/* GOLD */
+.pb-menu[data-pb-metal="gold"] {
+  --pb-menu-front: #aa8742;
+  --pb-menu-top-light: 23%;
+  --pb-menu-side-shade: 30%;
+  --pb-menu-edge-light: 19%;
+  --pb-menu-text: #ffffff;
+}
+
+/* COPPER */
+.pb-menu[data-pb-metal="copper"] {
+  --pb-menu-front: #a56649;
+  --pb-menu-top-light: 20%;
+  --pb-menu-side-shade: 35%;
+  --pb-menu-edge-light: 20%;
+  --pb-menu-text: #ffffff;
+}
+
+/* BRONZE */
+.pb-menu[data-pb-metal="bronze"] {
+  --pb-menu-front: #766346;
+  --pb-menu-top-light: 18%;
+  --pb-menu-side-shade: 36%;
+  --pb-menu-edge-light: 18%;
+  --pb-menu-text: #ffffff;
+}
+
+/* ROSE GOLD */
+.pb-menu[data-pb-metal="rose-gold"] {
+  --pb-menu-front: #ae777a;
+  --pb-menu-top-light: 21%;
+  --pb-menu-side-shade: 30%;
+  --pb-menu-edge-light: 15%;
+  --pb-menu-text: #ffffff;
+}
+
+/* OBSIDIAN */
+.pb-menu[data-pb-metal="obsidian"] {
+  --pb-menu-front: #333740;
+  --pb-menu-top-light: 20%;
+  --pb-menu-side-shade: 38%;
+  --pb-menu-edge-light: 20%;
+  --pb-menu-text: #ffffff;
+}

@@ -1,0 +1,9 @@
+{
+  "format": "pandora-box-ui",
+  "version": 3,
+  "state": { "metal": "titanium", "palette": "aurora" },
+  "variables": {
+    "--pb-menu-hover-text": "#ffffff",
+    "--pb-menu-move-duration": "750ms"
+  }
+}

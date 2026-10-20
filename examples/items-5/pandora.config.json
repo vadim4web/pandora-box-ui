@@ -1,0 +1,25 @@
+{
+  "format": "pandora-box-ui",
+  "version": 3,
+  "state": {
+    "metal": "titanium",
+    "palette": "aurora",
+    "itemCount": 5,
+    "textMode": "clip",
+    "iconMode": "cutout",
+    "maskScale": 1.4,
+    "maskX": 50,
+    "maskY": 50,
+    "maskOpacity": 1,
+    "textIdle": "#f4ecff",
+    "textHover": "#ffffff",
+    "items": [
+      {"label": "Home", "url": "#home", "mask": "<svg viewBox=\"0 0 24 24\"><rect x=\"1\" y=\"5\" width=\"22\" height=\"14\" rx=\"3\" fill=\"white\"/></svg>", "variables": {}},
+      {"label": "Projects", "url": "#projects", "mask": "<svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"11\" fill=\"white\"/></svg>", "variables": {}},
+      {"label": "Lab", "url": "#lab", "mask": null, "variables": {}},
+      {"label": "About", "url": "#about", "mask": null, "variables": {}},
+      {"label": "Contact", "url": "mailto:hello@example.com", "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"2\" y=\"5\" width=\"20\" height=\"14\" rx=\"2\"/><path d=\"m3 6 9 7 9-7\"/></svg>", "mask": null, "variables": {}}
+    ]
+  },
+  "variables": {"--pb-menu-font-size": "44px", "--pb-menu-hover-offset": "-7%"}
+}

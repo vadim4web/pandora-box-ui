@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <title>PandoraBox UI — Pandora Menu · v0.2.0</title>
+  <link rel="stylesheet" href="../src/pandora-menu.css" />
+  <link rel="stylesheet" href="../src/pandora-metals.css" />
+  <link rel="stylesheet" href="../src/pandora-palettes.css" />
+  <link rel="stylesheet" href="./demo.css" />
+  <style id="studio-core-style"></style>
+  <style id="studio-generated-style"></style>
+  <style id="studio-user-style"></style>
+  <script type="module" src="./demo.js"></script>
+</head>
+<body>
+<main class="app">
+  <header class="app-header">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">◈</span>
+      <div>
+        <p class="eyebrow">PANDORABOX UI <span class="version">v0.2.0</span></p>
+        <h1>Pandora Menu <span class="h1-tag">Playground</span></h1>
+        <p class="subtitle">Выбирай металл, градиент, цвета текста и движение независимо друг от друга.</p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <button type="button" class="action-btn secondary" id="reset-all" title="Вернуть стандартные настройки">↺ <span>Сбросить</span></button>
+      <button type="button" class="action-btn primary" id="copy-css">⧉ <span>Copy CSS</span></button>
+    </div>
+  </header>
+  <div class="workspace">
+    <section class="scene-panel" aria-labelledby="scene-title">
+      <div class="scene-head"><span id="scene-title">LIVE PREVIEW</span><span class="live-dot"><i aria-hidden="true"></i> CSS-only runtime</span></div>
+      <div class="scene-body">
+        <nav class="demo-nav" aria-label="Главное меню">
+          <ul class="pb-menu" id="menu" data-pb-metal="steel" data-pb-palette="rainbow">
+            <li class="pb-menu__item">
+              <span class="pb-menu__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg></span>
+              <a class="pb-menu__link" href="#home">Home</a>
+            </li>
+            <li class="pb-menu__item">
+              <span class="pb-menu__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h7l2 3h9v11H3z"/><path d="M3 8h18"/></svg></span>
+              <a class="pb-menu__link" href="#projects">Projects</a>
+            </li>
+            <li class="pb-menu__item">
+              <span class="pb-menu__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m8 6-6 6 6 6m8-12 6 6-6 6M14 4l-4 16"/></svg></span>
+              <a class="pb-menu__link" href="#lab">Lab</a>
+            </li>
+            <li class="pb-menu__item">
+              <span class="pb-menu__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-5 3.5-7 8-7s8 2 8 7"/></svg></span>
+              <a class="pb-menu__link" href="#about">About</a>
+            </li>
+            <li class="pb-menu__item">
+              <span class="pb-menu__icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></span>
+              <a class="pb-menu__link" href="#contact">Contact</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="scene-foot"><span>Наведи курсор на пункт меню</span><span>↳ Tab / hover</span></div>
+    </section>
+    <aside class="inspector" aria-label="Настройки Pandora Menu">
+      <div class="inspector-heading"><h2>Appearance & Motion</h2><span>3 editable tabs + 7 панелей</span></div>
+
+
+      <details class="control-panel" id="panel-code" open>
+        <summary><span class="panel-title"><span class="panel-number">01</span><span class="panel-name">Code · Monaco Editor<small>Редактируй CSS / HTML / Core · применяй и сохраняй</small></span></span><span class="chevron" aria-hidden="true"></span></summary>
+        <div class="panel-content code-panel-content">
+          <div class="code-tabs" role="tablist" aria-label="Исходники и экспорт">
+            <button type="button" class="code-tab is-active" role="tab" data-code-tab="config" aria-selected="true">Config CSS <span class="code-dirty" id="code-dirty">●</span></button>
+            <button type="button" class="code-tab" role="tab" data-code-tab="html" aria-selected="false">HTML</button>
+            <button type="button" class="code-tab" role="tab" data-code-tab="core" aria-selected="false">Core CSS</button>
+          </div>
+          <div class="code-info"><span id="editor-mode">Все три документа редактируемы</span><span id="editor-engine">Загрузка Monaco…</span></div>
+          <div class="editor-stage" id="editor-stage">
+            <div id="monaco-container" aria-label="Monaco Editor · исходный CSS"></div>
+            <textarea id="editor-fallback" aria-label="Редактор CSS или HTML" spellcheck="false"></textarea>
+          </div>
+          <p class="code-status" id="code-status" aria-live="polite">CSS синхронизирован с настройками.</p>
+          <div class="code-actions">
+            <button type="button" class="action-btn primary" id="apply-css">▶ Apply current tab</button>
+            <button type="button" class="action-btn secondary" id="save-css">↓ Save .css</button>
+            <button type="button" class="action-btn secondary" id="editor-copy">⧉ Copy code</button>
+          </div>
+          <div class="code-actions minor-actions">
+            <button type="button" class="small-btn" id="sync-from-controls">↻ Generate config from controls</button>
+            <button type="button" class="small-btn" id="restore-draft">↶ Restore previous draft</button>
+            <button type="button" class="small-btn" id="export-settings">↓ Export .json</button>
+            <label class="small-btn file-button">↑ Import .css / .html / .json<input type="file" id="import-settings" accept=".css,.html,.json,text/css,text/html,application/json" /></label>
+          </div>
+          <p class="panel-note">Все вкладки редактируются независимо. Apply применяет Config CSS, HTML-разметку или Core CSS к превью. Save скачивает активный документ. Core CSS в Playground не меняет исходник на диске — сохранённый файл можно использовать в своём проекте.</p>
+        </div>
+      </details>
+
+      <details class="control-panel" id="panel-items">
+        <summary><span class="panel-title"><span class="panel-number">02</span><span class="panel-name">Menu Items<small>2–9 пунктов · подписи, ссылки и SVG</small></span></span><span class="chevron" aria-hidden="true"></span></summary>
+        <div class="panel-content">
+          <label class="edit-toggle"><input type="checkbox" id="edit-mode" /> Edit Mode — редактировать подписи в меню</label>
+          <label class="slider-label" for="item-count">Количество пунктов <output id="item-count-value">5</output></label>
+          <input type="range" id="item-count" min="2" max="9" step="1" value="5" />
+          <div class="code-actions"><button type="button" class="small-btn" id="add-item">+ Add Item</button><button type="button" class="small-btn" id="remove-item">− Remove Item</button></div>
+          <p class="panel-note">Уменьшение скрывает последние пункты. Их данные сохраняются и возвращаются при увеличении количества.</p>
+          <div id="item-fields"></div>
+        </div>
+      </details>
+
+      <details class="control-panel" id="panel-metal">
+        <summary><span class="panel-title"><span class="panel-number">03</span><span class="panel-name">Metal / Idle<small>Основной материал без наведения</small></span></span><span class="chevron" aria-hidden="true"></span></summary>
+        <div class="panel-content">
+          <div class="chips" role="group" aria-label="Металл меню">
+            <button type="button" data-metal="steel" aria-pressed="true"><span class="metal-dot" style="--dot:#808080" aria-hidden="true"></span>Steel</button>
+<button type="button" data-metal="silver" aria-pressed="false"><span class="metal-dot" style="--dot:#b7bec6" aria-hidden="true"></span>Silver</button>
+<button type="button" data-metal="chrome" aria-pressed="false"><span class="metal-dot" style="--dot:#9aabbc" aria-hidden="true"></span>Chrome</button>
+<button type="button" data-metal="titanium" aria-pressed="false"><span class="metal-dot" style="--dot:#747e92" aria-hidden="true"></span>Titanium</button>
+<button type="button" data-metal="graphite" aria-pressed="false"><span class="metal-dot" style="--dot:#49515d" aria-hidden="true"></span>Graphite</button>
+<button type="button" data-metal="gold" aria-pressed="false"><span class="metal-dot" style="--dot:#aa8742" aria-hidden="true"></span>Gold</button>
+<button type="button" data-metal="copper" aria-pressed="false"><span class="metal-dot" style="--dot:#a56649" aria-hidden="true"></span>Copper</button>
+<button type="button" data-metal="bronze" aria-pressed="false"><span class="metal-dot" style="--dot:#766346" aria-hidden="true"></span>Bronze</button>
+<button type="button" data-metal="rose-gold" aria-pressed="false"><span class="metal-dot" style="--dot:#ae777a" aria-hidden="true"></span>Rose Gold</button>
+<button type="button" data-metal="obsidian" aria-pressed="false"><span class="metal-dot" style="--dot:#333740" aria-hidden="true"></span>Obsidian</button>
+<button type="button" data-metal="custom" aria-pressed="false"><span class="metal-dot" id="custom-metal-dot" style="--dot:#808080" aria-hidden="true"></span>Custom</button>
+          </div>
+          <div class="panel-subline"><strong>Свой металл</strong><span>Front face</span></div>
+          <div class="custom-single" id="metal-custom-control">
+            <label for="metal-color">Цвет поверхности</label>
+            <input type="color" id="metal-color" value="#808080" aria-label="Цвет металла" />
+            <input class="hex-input" id="metal-hex" value="#808080" aria-label="HEX цвета металла" maxlength="7" spellcheck="false" />
+          </div>
+        </div>
+      </details>
+
+      <details class="control-panel" id="panel-gradient">
+        <summary><span class="panel-title"><span class="panel-number">04</span><span class="panel-name">Hover Gradient<small>Гамма активного пункта</small></span></span><span class="chevron" aria-hidden="true"></span></summary>
+        <div class="panel-content">
+          <div class="chips" role="group" aria-label="Градиент при наведении">
+            <button type="button" data-palette="classic" aria-pressed="false"><span class="gradient-dot" style="--dot-gradient:linear-gradient(90deg,#09646c,#0b7781,#0e8a91,#169e9d,#21b0a8)" aria-hidden="true"></span>Classic</button>
+<button type="button" data-palette="cym" aria-pressed="false"><span class="gradient-dot" style="--dot-gradient:linear-gradient(90deg,#009db2,#40bbbc,#d8b52e,#ce7175,#a84aaf)" aria-hidden="true"></span>CYM</button>
+<button type="button" data-palette="rgb" aria-pressed="false"><span class="gradient-dot" style="--dot-gradient:linear-gradient(90deg,#c14450,#ac743c,#358c55,#257e9e,#465fbb)" aria-hidden="true"></span>RGB</button>
+<button type="button" data-palette="rainbow" aria-pressed="true"><span class="gradient-dot" style="--dot-gradient:linear-gradient(90deg,#c44a5d,#ba8434,#589a58,#3b95ae,#885ac5)" aria-hidden="true"></span>Rainbow</button>
+<button type="button" data-palette="git" aria-pressed="false"><span class="gradient-dot" style="--dot-gradient:linear-gradient(90deg,#c34b30,#b27936,#43925c,#2a8692,#6266bb)" aria-hidden="true"></span>Git</button>
+<button type="button" data-palette="neon" aria-pressed="false"><span class="gradient-dot" style="--dot-gradient:linear-gradient(90deg,#ae3996,#7451b9,#3979bf,#199d9c,#72a339)" aria-hidden="true"></span>Neon</button>
+<button type="button" data-palette="solar" aria-pressed="false"><span class="gradient-dot" style="--dot-gradient:linear-gradient(90deg,#9b473d,#bf623a,#c28b3a,#aaa34a,#678e69)" aria-hidden="true"></span>Solar</button>
+<button type="button" data-palette="aurora" aria-pressed="false"><span class="gradient-dot" style="--dot-gradient:linear-gradient(90deg,#239daa,#3488ba,#616db7,#925dad,#b96d92)" aria-hidden="true"></span>Aurora</button>
+<button type="button" data-palette="ocean" aria-pressed="false"><span class="gradient-dot" style="--dot-gradient:linear-gradient(90deg,#1a7285,#227f9a,#366eaa,#4c5ca1,#2c8b9e)" aria-hidden="true"></span>Ocean</button>
+<button type="button" data-palette="sunset" aria-pressed="false"><span class="gradient-dot" style="--dot-gradient:linear-gradient(90deg,#96538f,#b64f75,#c85c51,#c4823f,#ba9b4b)" aria-hidden="true"></span>Sunset</button>
+<button type="button" data-palette="custom" aria-pressed="false"><span class="gradient-dot" id="custom-gradient-dot" style="--dot-gradient:linear-gradient(90deg,#009db2,#40bbbc,#d8b52e,#ce7175,#a84aaf)" aria-hidden="true"></span>Custom</button>
+          </div>
+          <div class="preview-bar" id="gradient-preview" aria-label="Предпросмотр градиента"></div>
+          <div class="panel-subline"><strong>Свой градиент</strong><span>5 опорных цветов · OKLCH</span></div>
+          <div class="gradient-stops" id="gradient-stops">
+            <div class="stop-field"><label for="stop-0">01<span>0%</span></label><input type="color" id="stop-0" data-stop="0" value="#808080" aria-label="Цвет градиента 1"/><input type="text" class="hex-input" data-stop-hex="0" value="#808080" maxlength="7" spellcheck="false" aria-label="HEX цвет градиента 1"/></div>
+<div class="stop-field"><label for="stop-1">02<span>25%</span></label><input type="color" id="stop-1" data-stop="1" value="#808080" aria-label="Цвет градиента 2"/><input type="text" class="hex-input" data-stop-hex="1" value="#808080" maxlength="7" spellcheck="false" aria-label="HEX цвет градиента 2"/></div>
+<div class="stop-field"><label for="stop-2">03<span>50%</span></label><input type="color" id="stop-2" data-stop="2" value="#808080" aria-label="Цвет градиента 3"/><input type="text" class="hex-input" data-stop-hex="2" value="#808080" maxlength="7" spellcheck="false" aria-label="HEX цвет градиента 3"/></div>
+<div class="stop-field"><label for="stop-3">04<span>75%</span></label><input type="color" id="stop-3" data-stop="3" value="#808080" aria-label="Цвет градиента 4"/><input type="text" class="hex-input" data-stop-hex="3" value="#808080" maxlength="7" spellcheck="false" aria-label="HEX цвет градиента 4"/></div>
+<div class="stop-field"><label for="stop-4">05<span>100%</span></label><input type="color" id="stop-4" data-stop="4" value="#808080" aria-label="Цвет градиента 5"/><input type="text" class="hex-input" data-stop-hex="4" value="#808080" maxlength="7" spellcheck="false" aria-label="HEX цвет градиента 5"/></div>
+          </div>
+          <p class="panel-note">Редактирование любой точки создаёт Custom-палитру. Цвета промежуточных пунктов рассчитываются автоматически.</p>
+        </div>
+      </details>
+
+      <details class="control-panel" id="panel-colors">
+        <summary><span class="panel-title"><span class="panel-number">05</span><span class="panel-name">Text & Icons<small>Обычный и hover — независимо</small></span></span><span class="chevron" aria-hidden="true"></span></summary>
+        <div class="panel-content">
+          <div class="color-grid">
+            <div class="color-field" data-color-field="textIdle">
+  <div class="color-label"><span><strong>Idle text</strong><small>Без наведения</small></span><button class="mini-reset" data-reset-color="textIdle" type="button" aria-label="Сбросить Idle text" title="Вернуть цвет по умолчанию">↺</button></div>
+  <div class="color-value"><input type="color" id="textIdle-picker" data-color-picker="textIdle" value="#ffffff" aria-label="Idle text — выбрать цвет" />
+  <input type="text" class="hex-input" id="textIdle-hex" data-color-hex="textIdle" maxlength="7" value="#FFFFFF" spellcheck="false" aria-label="Idle text — HEX" /></div>
+</div>
+<div class="color-field" data-color-field="textHover">
+  <div class="color-label"><span><strong>Hover text</strong><small>При наведении</small></span><button class="mini-reset" data-reset-color="textHover" type="button" aria-label="Сбросить Hover text" title="Вернуть цвет по умолчанию">↺</button></div>
+  <div class="color-value"><input type="color" id="textHover-picker" data-color-picker="textHover" value="#ffffff" aria-label="Hover text — выбрать цвет" />
+  <input type="text" class="hex-input" id="textHover-hex" data-color-hex="textHover" maxlength="7" value="#FFFFFF" spellcheck="false" aria-label="Hover text — HEX" /></div>
+</div>
+<div class="color-field" data-color-field="iconIdle">
+  <div class="color-label"><span><strong>Idle icons</strong><small>Иконки в покое</small></span><button class="mini-reset" data-reset-color="iconIdle" type="button" aria-label="Сбросить Idle icons" title="Вернуть цвет по умолчанию">↺</button></div>
+  <div class="color-value"><input type="color" id="iconIdle-picker" data-color-picker="iconIdle" value="#ffffff" aria-label="Idle icons — выбрать цвет" />
+  <input type="text" class="hex-input" id="iconIdle-hex" data-color-hex="iconIdle" maxlength="7" value="#FFFFFF" spellcheck="false" aria-label="Idle icons — HEX" /></div>
+</div>
+<div class="color-field" data-color-field="iconHover">
+  <div class="color-label"><span><strong>Hover icons</strong><small>Иконки при наведении</small></span><button class="mini-reset" data-reset-color="iconHover" type="button" aria-label="Сбросить Hover icons" title="Вернуть цвет по умолчанию">↺</button></div>
+  <div class="color-value"><input type="color" id="iconHover-picker" data-color-picker="iconHover" value="#ffffff" aria-label="Hover icons — выбрать цвет" />
+  <input type="text" class="hex-input" id="iconHover-hex" data-color-hex="iconHover" maxlength="7" value="#FFFFFF" spellcheck="false" aria-label="Hover icons — HEX" /></div>
+</div>
+          </div>
+          <p class="panel-note">Иконки наследуют цвета текста, пока ты не задашь им отдельный оттенок. ↺ возвращает наследование.</p>
+        </div>
+      </details>
+
+      <details class="control-panel" id="panel-masks">
+        <summary><span class="panel-title"><span class="panel-number">06</span><span class="panel-name">Clip & Cutout<small>Независимые режимы текста и иконок</small></span></span><span class="chevron" aria-hidden="true"></span></summary>
+        <div class="panel-content">
+          <label class="select-field">Text rendering mode <select id="text-mode"><option value="normal">Normal</option><option value="clip">Clip</option><option value="cutout">Cutout</option></select></label>
+          <label class="select-field">Icon rendering mode <select id="icon-mode"><option value="normal">Normal</option><option value="clip">Clip</option><option value="cutout">Cutout</option></select></label>
+          <div class="slider-group">
+            <label class="mask-field">Mask scale <output id="mask-scale-value"></output><input type="range" id="mask-scale" min="0.25" max="3" step="0.05" /></label>
+            <label class="mask-field">Mask X <output id="mask-x-value"></output><input type="range" id="mask-x" min="0" max="100" step="1" /></label>
+            <label class="mask-field">Mask Y <output id="mask-y-value"></output><input type="range" id="mask-y" min="0" max="100" step="1" /></label>
+            <label class="mask-field">Mask opacity <output id="mask-opacity-value"></output><input type="range" id="mask-opacity" min="0" max="1" step="0.05" /></label>
+          </div>
+          <p class="panel-note">Clip ограничивает видимость SVG-маской. Cutout создаёт отверстия в передней или боковой поверхности. Собственную SVG-маску можно задать для каждого пункта в Menu Items. В Edit Mode подписи временно видны полностью.</p>
+        </div>
+      </details>
+
+      <details class="control-panel" id="panel-motion">
+        <summary><span class="panel-title"><span class="panel-number">07</span><span class="panel-name">Geometry & Motion<small>Размеры, движение и анимация</small></span></span><span class="chevron" aria-hidden="true"></span></summary>
+        <div class="panel-content">
+          <div class="slider-group">
+            <div class="slider-field"><div class="slider-label"><label for="slider-fontSize">Font size</label><output id="output-fontSize" for="slider-fontSize"></output></div><input type="range" id="slider-fontSize" data-slider="fontSize" min="26" max="60" step="1" /><span class="slider-unit">px</span></div>
+<div class="slider-field"><div class="slider-label"><label for="slider-offset">Hover offset</label><output id="output-offset" for="slider-offset"></output></div><input type="range" id="slider-offset" data-slider="offset" min="-12" max="0" step="0.5" /><span class="slider-unit">%</span></div>
+<div class="slider-field"><div class="slider-label"><label for="slider-moveDuration">Move duration</label><output id="output-moveDuration" for="slider-moveDuration"></output></div><input type="range" id="slider-moveDuration" data-slider="moveDuration" min="0" max="1500" step="1" /><span class="slider-unit">ms</span></div>
+<div class="slider-field"><div class="slider-label"><label for="slider-colorDuration">Color transition</label><output id="output-colorDuration" for="slider-colorDuration"></output></div><input type="range" id="slider-colorDuration" data-slider="colorDuration" min="0" max="2000" step="50" /><span class="slider-unit">ms</span></div>
+<div class="slider-field"><div class="slider-label"><label for="slider-overlap">Item overlap</label><output id="output-overlap" for="slider-overlap"></output></div><input type="range" id="slider-overlap" data-slider="overlap" min="0" max="4" step="0.5" /><span class="slider-unit">px</span></div>
+          </div>
+          <p class="panel-note">Исходные матрицы трёхмерных граней не изменены. Системная настройка reduced motion учитывается автоматически.</p>
+        </div>
+      </details>
+
+
+      <details class="control-panel" id="panel-integration">
+        <summary><span class="panel-title"><span class="panel-number">08</span><span class="panel-name">Integration / Distribution<small>Root config · npm · CDN · CSS export</small></span></span><span class="chevron" aria-hidden="true"></span></summary>
+        <div class="panel-content">
+          <p class="panel-note"><strong>Конфиг проекта имеет приоритет.</strong> При обычной npm-установке ищутся файлы <code>pandora.config.json</code> и <code>pandora.config.css</code> в корне проекта. При наличии обоих CSS применяется последним. Внешний конфиг загружается без исполнения JS.</p>
+          <div class="install-example"><b>npm / Vite / Vue / React · после публикации</b><pre>npm install pandora-box-ui
+import 'pandora-box-ui/pandora-box-ui.css';
+
+# после изменения config:
+npx pandora-box-ui build --out ./src/pandora-box-ui.css</pre></div>
+          <div class="install-example"><b>pandora.config.css · корень приложения</b><pre>.pb-menu {
+  --pb-menu-front: #b79864;
+  --pb-menu-hover-text: #101820;
+  --pb-menu-gradient-0: #12acc2;
+}</pre></div>
+          <div class="install-example"><b>Публикация пока не выполнена</b><pre>npm-пакет сейчас приватный. CDN-ссылки станут
+доступны только после npm publish.
+Для Live Server npm и сборка не требуются.</pre></div>
+        </div>
+      </details>
+
+      <p class="settings-footnote">Каждая вкладка сохраняет свой черновик в браузере. <strong>Copy CSS</strong> копирует Config CSS. Кнопка Save экспортирует активную вкладку.</p>
+    </aside>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</main>
+</body>
+</html>

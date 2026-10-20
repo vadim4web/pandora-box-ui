@@ -1,0 +1,5 @@
+/* Overrides even JSON variables and built-in metals, when desired. */
+.pb-menu {
+  --pb-menu-text: #f4f4fa;
+  --pb-menu-hover-offset: -8%;
+}

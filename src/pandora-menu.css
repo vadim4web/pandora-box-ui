@@ -1,0 +1,463 @@
+/*
+ * PandoraBox UI — Pandora Menu v0.2.0
+ * CSS-only pseudo-3D navigation component.
+ * Public configuration: --pb-menu-* ; internal geometry: --_pb-menu-*
+ */
+
+.pb-menu,
+.pb-menu::before,
+.pb-menu__item,
+.pb-menu__item::before,
+.pb-menu__item::after,
+.pb-menu__link,
+.pb-menu__link::before,
+.pb-menu__label {
+  box-sizing: border-box;
+}
+
+.pb-menu {
+  /* Public design tokens */
+  --pb-menu-front: #808080;
+  --pb-menu-top-light: 15%;
+  --pb-menu-side-shade: 25%;
+  --pb-menu-occlusion-shade: 37.5%;
+  --pb-menu-edge-light: 12%;
+  --pb-menu-text: #fff;
+  --pb-menu-ground: #202020;
+  --pb-menu-accent-hue: 180;
+  --pb-menu-accent-saturation: 80%;
+  --pb-menu-accent-lightness: 28%;
+  /* Gradient anchor points; override with any custom palette. */
+  --pb-menu-gradient-0: #0e8080;
+  --pb-menu-gradient-1: #118989;
+  --pb-menu-gradient-2: #159292;
+  --pb-menu-gradient-3: #199b9b;
+  --pb-menu-gradient-4: #20a4a4;
+  --pb-menu-hover-text: #fff;
+  --pb-menu-item-overlap: 1px;
+  --pb-menu-hover-offset: -5%;
+  --pb-menu-move-duration: 0.857s;
+  --pb-menu-color-duration: 1s;
+  --pb-menu-shadow-duration: 0.75s;
+  --pb-menu-icon-size: 55%;
+  --pb-menu-mask-scale: 1;
+  --pb-menu-mask-x: 50%;
+  --pb-menu-mask-y: 50%;
+  --pb-menu-mask-opacity: 1;
+
+  /* Internal projection constants; keep in sync with pseudo-faces. */
+  --_pb-menu-depth-rise: 0.4336708882;
+  --_pb-menu-side-scale: 0.9681476404;
+
+  position: relative;
+  isolation: isolate;
+  width: var(--pb-menu-width, 8.5em);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  flex-shrink: 0;
+  font-family: var(--pb-menu-font-family, Georgia, 'Times New Roman', Times, serif);
+  font-size: var(--pb-menu-font-size, 3rem);
+  font-weight: var(--pb-menu-font-weight, 800);
+  line-height: 1.1458333333;
+  letter-spacing: 0.075ch;
+  transform: var(--pb-menu-transform, rotateX(30deg) rotateY(-25deg) rotateZ(13deg) scaleX(0.66));
+}
+
+.pb-menu__item {
+  /*
+   * Each color is sampled along the SAME five-stop palette. Consecutive
+   * menu items receive smoothly progressing colors instead of striped cycles.
+   * The selector fallback samples the actual count for two to nine items;
+   * sibling-count() handles arbitrary counts in modern engines.
+   */
+  --_pb-menu-gradient-index: 0;
+  --_pb-menu-gradient-progress: clamp(0, calc(var(--_pb-menu-gradient-index) * var(--_pb-menu-gradient-increment, 0.25)), 1);
+  --_pb-menu-gradient-step-1: clamp(0, calc(var(--_pb-menu-gradient-progress) * 4), 1);
+  --_pb-menu-gradient-step-2: clamp(0, calc(var(--_pb-menu-gradient-progress) * 4 - 1), 1);
+  --_pb-menu-gradient-step-3: clamp(0, calc(var(--_pb-menu-gradient-progress) * 4 - 2), 1);
+  --_pb-menu-gradient-step-4: clamp(0, calc(var(--_pb-menu-gradient-progress) * 4 - 3), 1);
+  --_pb-menu-gradient-mix-1: color-mix(in oklch, var(--pb-menu-gradient-0), var(--pb-menu-gradient-1) calc(var(--_pb-menu-gradient-step-1) * 100%));
+  --_pb-menu-gradient-mix-2: color-mix(in oklch, var(--_pb-menu-gradient-mix-1), var(--pb-menu-gradient-2) calc(var(--_pb-menu-gradient-step-2) * 100%));
+  --_pb-menu-gradient-mix-3: color-mix(in oklch, var(--_pb-menu-gradient-mix-2), var(--pb-menu-gradient-3) calc(var(--_pb-menu-gradient-step-3) * 100%));
+  --_pb-menu-gradient-color: color-mix(in oklch, var(--_pb-menu-gradient-mix-3), var(--pb-menu-gradient-4) calc(var(--_pb-menu-gradient-step-4) * 100%));
+
+  /* Per-item colors are resolved here, never on following siblings. */
+  --_pb-menu-face: var(--pb-menu-item-color, var(--pb-menu-front));
+  --_pb-menu-side: var(--pb-menu-side, color-mix(in srgb, var(--_pb-menu-face), black var(--pb-menu-side-shade)));
+  --_pb-menu-top: var(--pb-menu-item-top, var(--pb-menu-top, color-mix(in srgb, var(--_pb-menu-face), white var(--pb-menu-top-light))));
+  --_pb-menu-occluded-side: var(--pb-menu-occluded-side, color-mix(in srgb, var(--_pb-menu-face), black var(--pb-menu-occlusion-shade)));
+  --_pb-menu-front-edge: color-mix(in srgb, var(--_pb-menu-face), white var(--pb-menu-edge-light));
+  --_pb-menu-side-edge: color-mix(in srgb, var(--_pb-menu-side), white var(--pb-menu-edge-light));
+
+  position: relative;
+  /*
+   * The FIRST item must paint above later items.
+   * Otherwise every following ::after face hides the preceding item's text.
+   * Modern engines: sibling-index() (no item limit).
+   * Fallback for older engines: :nth-child() tokens below (up to 20 items).
+   * Consumers can always override a layer with --pb-menu-layer on an item.
+   */
+  z-index: var(--pb-menu-layer, var(--_pb-menu-auto-layer, 1));
+  background-color: var(--_pb-menu-face);
+  box-shadow: 0 0 0.0625em var(--_pb-menu-front-edge);
+  color: var(--pb-menu-text);
+  transform: translateX(0);
+  transition:
+    transform var(--pb-menu-move-duration),
+    background-color var(--pb-menu-color-duration),
+    color var(--pb-menu-color-duration),
+    box-shadow var(--pb-menu-color-duration);
+}
+
+/* Resolve sibling functions on the item before the front surface inherits it. */
+@property --_pb-menu-gradient-progress {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+/* Actual-count fallback, including engines without sibling-count(). */
+.pb-menu__item:nth-child(1) { --_pb-menu-gradient-index: 0; }
+.pb-menu__item:nth-child(2) { --_pb-menu-gradient-index: 1; }
+.pb-menu__item:nth-child(3) { --_pb-menu-gradient-index: 2; }
+.pb-menu__item:nth-child(4) { --_pb-menu-gradient-index: 3; }
+.pb-menu__item:nth-child(5) { --_pb-menu-gradient-index: 4; }
+.pb-menu__item:nth-child(6) { --_pb-menu-gradient-index: 5; }
+.pb-menu__item:nth-child(7) { --_pb-menu-gradient-index: 6; }
+.pb-menu__item:nth-child(8) { --_pb-menu-gradient-index: 7; }
+.pb-menu__item:nth-child(n + 9) { --_pb-menu-gradient-index: 8; }
+
+.pb-menu__item:first-child:nth-last-child(2),
+.pb-menu__item:first-child:nth-last-child(2) ~ .pb-menu__item { --_pb-menu-gradient-increment: 1; }
+.pb-menu__item:first-child:nth-last-child(3),
+.pb-menu__item:first-child:nth-last-child(3) ~ .pb-menu__item { --_pb-menu-gradient-increment: 0.5; }
+.pb-menu__item:first-child:nth-last-child(4),
+.pb-menu__item:first-child:nth-last-child(4) ~ .pb-menu__item { --_pb-menu-gradient-increment: 0.3333333333; }
+.pb-menu__item:first-child:nth-last-child(5),
+.pb-menu__item:first-child:nth-last-child(5) ~ .pb-menu__item { --_pb-menu-gradient-increment: 0.25; }
+.pb-menu__item:first-child:nth-last-child(6),
+.pb-menu__item:first-child:nth-last-child(6) ~ .pb-menu__item { --_pb-menu-gradient-increment: 0.2; }
+.pb-menu__item:first-child:nth-last-child(7),
+.pb-menu__item:first-child:nth-last-child(7) ~ .pb-menu__item { --_pb-menu-gradient-increment: 0.1666666667; }
+.pb-menu__item:first-child:nth-last-child(8),
+.pb-menu__item:first-child:nth-last-child(8) ~ .pb-menu__item { --_pb-menu-gradient-increment: 0.1428571429; }
+.pb-menu__item:first-child:nth-last-child(9),
+.pb-menu__item:first-child:nth-last-child(9) ~ .pb-menu__item { --_pb-menu-gradient-increment: 0.125; }
+
+@supports (z-index: calc(100 - sibling-index())) {
+  .pb-menu .pb-menu__item {
+    --_pb-menu-gradient-progress: calc((sibling-index() - 1) / max(1, sibling-count() - 1));
+  }
+}
+
+/* Preserve front-to-back painting without per-item inline styles. */
+.pb-menu__item:nth-child(1) { --_pb-menu-auto-layer: 20; }
+.pb-menu__item:nth-child(2) { --_pb-menu-auto-layer: 19; }
+.pb-menu__item:nth-child(3) { --_pb-menu-auto-layer: 18; }
+.pb-menu__item:nth-child(4) { --_pb-menu-auto-layer: 17; }
+.pb-menu__item:nth-child(5) { --_pb-menu-auto-layer: 16; }
+.pb-menu__item:nth-child(6) { --_pb-menu-auto-layer: 15; }
+.pb-menu__item:nth-child(7) { --_pb-menu-auto-layer: 14; }
+.pb-menu__item:nth-child(8) { --_pb-menu-auto-layer: 13; }
+.pb-menu__item:nth-child(9) { --_pb-menu-auto-layer: 12; }
+.pb-menu__item:nth-child(10) { --_pb-menu-auto-layer: 11; }
+.pb-menu__item:nth-child(11) { --_pb-menu-auto-layer: 10; }
+.pb-menu__item:nth-child(12) { --_pb-menu-auto-layer: 9; }
+.pb-menu__item:nth-child(13) { --_pb-menu-auto-layer: 8; }
+.pb-menu__item:nth-child(14) { --_pb-menu-auto-layer: 7; }
+.pb-menu__item:nth-child(15) { --_pb-menu-auto-layer: 6; }
+.pb-menu__item:nth-child(16) { --_pb-menu-auto-layer: 5; }
+.pb-menu__item:nth-child(17) { --_pb-menu-auto-layer: 4; }
+.pb-menu__item:nth-child(18) { --_pb-menu-auto-layer: 3; }
+.pb-menu__item:nth-child(19) { --_pb-menu-auto-layer: 2; }
+.pb-menu__item:nth-child(20) { --_pb-menu-auto-layer: 1; }
+
+/* Native dynamic stacking for any number of items (where supported). */
+@supports (z-index: calc(100 - sibling-index())) {
+  .pb-menu__item {
+    z-index: var(--pb-menu-layer, calc(100 - sibling-index()));
+  }
+}
+
+.pb-menu__item + .pb-menu__item {
+  margin-top: calc(-1 * var(--pb-menu-item-overlap));
+}
+
+.pb-menu__link {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  padding: 0.03em 0.4em 0.03em 0.75em;
+  color: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.pb-menu__link:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -4px;
+}
+
+/*
+ * Enhanced markup separates the front surface from its content. Masking the
+ * item itself would also flatten and cut away its projected upper/side faces.
+ * Legacy links containing direct text retain their original front surface.
+ */
+.pb-menu__item:has(.pb-menu__label) {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.pb-menu__item:has(.pb-menu__label) > .pb-menu__link::before {
+  position: absolute;
+  z-index: -1;
+  content: '';
+  inset: 0;
+  background-color: var(--_pb-menu-face);
+  box-shadow: 0 0 0.0625em var(--_pb-menu-front-edge);
+  -webkit-mask-image: var(--pb-menu-front-mask, none);
+  mask-image: var(--pb-menu-front-mask, none);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  mask-mode: alpha;
+  transition:
+    background-color var(--pb-menu-color-duration),
+    box-shadow var(--pb-menu-color-duration);
+  pointer-events: none;
+}
+
+.pb-menu__label {
+  display: inline-block;
+  min-height: 1.1458333333em;
+  min-height: 1lh;
+  vertical-align: top;
+  -webkit-mask-image: var(--pb-menu-text-clip, none);
+  mask-image: var(--pb-menu-text-clip, none);
+  -webkit-mask-size: calc(100% * var(--pb-menu-mask-scale)) calc(100% * var(--pb-menu-mask-scale));
+  mask-size: calc(100% * var(--pb-menu-mask-scale)) calc(100% * var(--pb-menu-mask-scale));
+  -webkit-mask-position: var(--pb-menu-mask-x) var(--pb-menu-mask-y);
+  mask-position: var(--pb-menu-mask-x) var(--pb-menu-mask-y);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  mask-mode: alpha;
+  opacity: var(--pb-menu-label-opacity, 1);
+}
+
+/* Keep the editable text available even when its display mode hides glyphs. */
+.pb-menu__label[contenteditable='true'] {
+  min-width: 1ch;
+  cursor: text;
+}
+
+.pb-menu__label[contenteditable='true']:focus {
+  -webkit-mask-image: none;
+  mask-image: none;
+  opacity: 1;
+  outline: 1px dashed currentColor;
+  outline-offset: 0.08em;
+}
+
+/* An optional real SVG icon can live in .pb-menu__icon.
+ * It follows the exact same side-face matrix as ::before, but needs no URL,
+ * asset path, or external icon font. --pb-menu-icon remains supported.
+ */
+.pb-menu__icon {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: -50%;
+  display: grid;
+  place-items: center;
+  width: 50%;
+  height: calc(100% / var(--_pb-menu-side-scale));
+  transform-origin: 100% 0;
+  transform: matrix(0.5, calc(var(--_pb-menu-depth-rise) / 2), 0, var(--_pb-menu-side-scale), 0, 0);
+  color: var(--pb-menu-icon-color, var(--pb-menu-text));
+  opacity: var(--pb-menu-icon-opacity, 1);
+  pointer-events: none;
+  transition: color var(--pb-menu-color-duration);
+}
+
+.pb-menu__icon svg,
+.pb-menu__icon img {
+  display: block;
+  width: var(--pb-menu-icon-size);
+  height: var(--pb-menu-icon-size);
+  max-width: none;
+  -webkit-mask-image: var(--pb-menu-icon-clip, none);
+  mask-image: var(--pb-menu-icon-clip, none);
+  -webkit-mask-size: calc(100% * var(--pb-menu-mask-scale)) calc(100% * var(--pb-menu-mask-scale));
+  mask-size: calc(100% * var(--pb-menu-mask-scale)) calc(100% * var(--pb-menu-mask-scale));
+  -webkit-mask-position: var(--pb-menu-mask-x) var(--pb-menu-mask-y);
+  mask-position: var(--pb-menu-mask-x) var(--pb-menu-mask-y);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  mask-mode: alpha;
+}
+
+/* Legacy icon markup used the runtime to supply outline paint. Enhanced SVGs
+ * retain their own fill/stroke, including custom filled and alpha artwork. */
+.pb-menu__item:not(:has(.pb-menu__label)) .pb-menu__icon svg,
+.pb-menu__item:not(:has(.pb-menu__label)) .pb-menu__icon img {
+  fill: none;
+  stroke: currentColor;
+}
+
+/* Left side face and its optional background-image icon. */
+.pb-menu__item::before {
+  position: absolute;
+  z-index: 0;
+  content: '';
+  top: 0;
+  left: -50%;
+  width: 50%;
+  height: calc(100% / var(--_pb-menu-side-scale));
+  background-color: var(--_pb-menu-side);
+  background-image: var(--pb-menu-icon, none);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: var(--pb-menu-icon-size);
+  -webkit-mask-image: var(--pb-menu-side-mask, none);
+  mask-image: var(--pb-menu-side-mask, none);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  mask-mode: alpha;
+  box-shadow: 0 0 0.0625em var(--_pb-menu-side-edge);
+  transform-origin: 100% 0;
+  transform: matrix(0.5, calc(var(--_pb-menu-depth-rise) / 2), 0, var(--_pb-menu-side-scale), 0, 0);
+  transition:
+    background-color var(--pb-menu-color-duration),
+    box-shadow var(--pb-menu-color-duration);
+  pointer-events: none;
+}
+
+/* Upper face. */
+.pb-menu__item::after {
+  position: absolute;
+  z-index: 0;
+  content: '';
+  bottom: 100%;
+  left: 0;
+  width: 100%;
+  aspect-ratio: 4;
+  background-color: var(--_pb-menu-top);
+  box-shadow: 0 0 0.0625em var(--_pb-menu-top);
+  transform-origin: 0 100%;
+  transform: matrix(1, 0, 1, var(--_pb-menu-depth-rise), 0, 0);
+  transition:
+    background-color var(--pb-menu-color-duration),
+    box-shadow var(--pb-menu-color-duration),
+    clip-path var(--pb-menu-move-duration);
+  pointer-events: none;
+}
+
+/*
+ * A later upper face normally sits entirely behind the preceding front/side.
+ * Do not paint that hidden area: it would otherwise fill their alpha cutouts.
+ * Relative movement exposes a left strip or a right triangular ledge. The
+ * polygon is in the unchanged upper face's 4:1 box, before its side matrix.
+ */
+.pb-menu__item:has(.pb-menu__label) {
+  --_pb-menu-upper-current-shift: 0%;
+  --_pb-menu-upper-previous-shift: 0%;
+}
+
+.pb-menu__item:has(.pb-menu__label):not(:first-child)::after {
+  --_pb-menu-upper-shift: calc(var(--_pb-menu-upper-current-shift) - var(--_pb-menu-upper-previous-shift));
+  --_pb-menu-upper-left: clamp(0%, calc(-1 * var(--_pb-menu-upper-shift) - var(--pb-menu-item-overlap) / var(--_pb-menu-depth-rise)), 100%);
+  --_pb-menu-upper-right: clamp(0%, calc(100% - var(--_pb-menu-upper-shift)), 100%);
+  --_pb-menu-upper-corner-x: clamp(0%, calc(125% - var(--_pb-menu-upper-shift)), 100%);
+  --_pb-menu-upper-corner-y: clamp(0%, calc(100% - 4 * var(--_pb-menu-upper-shift)), 100%);
+  clip-path: polygon(
+    0 0,
+    var(--_pb-menu-upper-left) 0,
+    var(--_pb-menu-upper-left) 100%,
+    var(--_pb-menu-upper-right) 100%,
+    var(--_pb-menu-upper-corner-x) var(--_pb-menu-upper-corner-y),
+    100% var(--_pb-menu-upper-corner-y),
+    100% 100%,
+    0 100%
+  );
+}
+
+.pb-menu__item:has(.pb-menu__label):is(:hover, :focus-within) {
+  --_pb-menu-upper-current-shift: var(--pb-menu-hover-offset);
+}
+
+.pb-menu__item:is(:hover, :focus-within) + .pb-menu__item:has(.pb-menu__label) {
+  --_pb-menu-upper-previous-shift: var(--pb-menu-hover-offset);
+}
+
+/* Only active item gets the accent; later items change ONLY their left side. */
+.pb-menu__item:is(:hover, :focus-within) {
+  --_pb-menu-face: var(--pb-menu-item-hover-color, var(--_pb-menu-gradient-color));
+  color: var(--pb-menu-hover-text);
+  --_pb-menu-side: var(--pb-menu-accent-side-color, color-mix(in srgb, var(--_pb-menu-face), black var(--pb-menu-side-shade)));
+  --_pb-menu-top: var(--pb-menu-accent-top-color, color-mix(in srgb, var(--_pb-menu-face), white var(--pb-menu-top-light)));
+  transform: translateX(var(--pb-menu-hover-offset));
+}
+
+/* Icon color is independently configurable in both states. */
+.pb-menu__item:is(:hover, :focus-within) .pb-menu__icon {
+  color: var(--pb-menu-hover-icon-color, var(--pb-menu-hover-text));
+}
+
+.pb-menu__item:is(:hover, :focus-within) ~ .pb-menu__item {
+  --_pb-menu-side: var(--_pb-menu-occluded-side);
+}
+
+/* Ground shadow; its movement is independent of the items. */
+.pb-menu::before {
+  position: absolute;
+  content: '';
+  top: 100%;
+  left: -0.0625em;
+  height: 50%;
+  width: calc(100% + 0.125em);
+  background: var(--pb-menu-ground);
+  border-radius: 50%;
+  opacity: 0.85;
+  filter: blur(0.85em);
+  transform:
+    rotateX(102deg)
+    rotateY(10deg)
+    rotateZ(39deg)
+    scaleX(var(--pb-menu-shadow-scale, 1.29))
+    scaleY(0.9)
+    translateX(var(--pb-menu-shadow-shift, 13.5%))
+    translateY(100%)
+    translateZ(-0.8125em)
+    scaleX(1.2)
+    scaleY(1.2);
+  transition: transform var(--pb-menu-shadow-duration);
+  pointer-events: none;
+}
+
+.pb-menu:has(.pb-menu__item:is(:hover, :focus-within))::before {
+  --pb-menu-shadow-scale: 1.37;
+  --pb-menu-shadow-shift: 9%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pb-menu {
+    --pb-menu-move-duration: 0s;
+    --pb-menu-color-duration: 0s;
+    --pb-menu-shadow-duration: 0s;
+  }
+
+  /* Generated config may have more specific duration variables. */
+  .pb-menu::before,
+  .pb-menu__item,
+  .pb-menu__item::before,
+  .pb-menu__item::after,
+  .pb-menu__link::before,
+  .pb-menu__icon {
+    transition-duration: 0s !important;
+  }
+}

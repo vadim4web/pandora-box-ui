@@ -1,0 +1,96 @@
+/* PandoraBox UI — independent HOVER gradients v0.1.6.
+ * Palette stops are interpolated in perceptually uniform OKLCH color space.
+ * They are used ONLY on :hover / :focus-within; IDLE finish is selected
+ * independently through data-pb-metal and pandora-metals.css.
+ * Customize any --pb-menu-gradient-0..4 token on your .pb-menu.
+ */
+
+/* CLASSIC — #09646c → #0b7781 → #0e8a91 → #169e9d → #21b0a8 */
+.pb-menu[data-pb-palette="classic"] {
+  --pb-menu-gradient-0: #09646c;
+  --pb-menu-gradient-1: #0b7781;
+  --pb-menu-gradient-2: #0e8a91;
+  --pb-menu-gradient-3: #169e9d;
+  --pb-menu-gradient-4: #21b0a8;
+}
+
+/* CYM — #009db2 → #40bbbc → #d8b52e → #ce7175 → #a84aaf */
+.pb-menu[data-pb-palette="cym"] {
+  --pb-menu-gradient-0: #009db2;
+  --pb-menu-gradient-1: #40bbbc;
+  --pb-menu-gradient-2: #d8b52e;
+  --pb-menu-gradient-3: #ce7175;
+  --pb-menu-gradient-4: #a84aaf;
+}
+
+/* RGB — #c14450 → #ac743c → #358c55 → #257e9e → #465fbb */
+.pb-menu[data-pb-palette="rgb"] {
+  --pb-menu-gradient-0: #c14450;
+  --pb-menu-gradient-1: #ac743c;
+  --pb-menu-gradient-2: #358c55;
+  --pb-menu-gradient-3: #257e9e;
+  --pb-menu-gradient-4: #465fbb;
+}
+
+/* RAINBOW — #c44a5d → #ba8434 → #589a58 → #3b95ae → #885ac5 */
+.pb-menu[data-pb-palette="rainbow"] {
+  --pb-menu-gradient-0: #c44a5d;
+  --pb-menu-gradient-1: #ba8434;
+  --pb-menu-gradient-2: #589a58;
+  --pb-menu-gradient-3: #3b95ae;
+  --pb-menu-gradient-4: #885ac5;
+}
+
+/* GIT — #c34b30 → #b27936 → #43925c → #2a8692 → #6266bb */
+.pb-menu[data-pb-palette="git"] {
+  --pb-menu-gradient-0: #c34b30;
+  --pb-menu-gradient-1: #b27936;
+  --pb-menu-gradient-2: #43925c;
+  --pb-menu-gradient-3: #2a8692;
+  --pb-menu-gradient-4: #6266bb;
+}
+
+/* NEON — #ae3996 → #7451b9 → #3979bf → #199d9c → #72a339 */
+.pb-menu[data-pb-palette="neon"] {
+  --pb-menu-gradient-0: #ae3996;
+  --pb-menu-gradient-1: #7451b9;
+  --pb-menu-gradient-2: #3979bf;
+  --pb-menu-gradient-3: #199d9c;
+  --pb-menu-gradient-4: #72a339;
+}
+
+/* SOLAR — #9b473d → #bf623a → #c28b3a → #aaa34a → #678e69 */
+.pb-menu[data-pb-palette="solar"] {
+  --pb-menu-gradient-0: #9b473d;
+  --pb-menu-gradient-1: #bf623a;
+  --pb-menu-gradient-2: #c28b3a;
+  --pb-menu-gradient-3: #aaa34a;
+  --pb-menu-gradient-4: #678e69;
+}
+
+/* AURORA — #239daa → #3488ba → #616db7 → #925dad → #b96d92 */
+.pb-menu[data-pb-palette="aurora"] {
+  --pb-menu-gradient-0: #239daa;
+  --pb-menu-gradient-1: #3488ba;
+  --pb-menu-gradient-2: #616db7;
+  --pb-menu-gradient-3: #925dad;
+  --pb-menu-gradient-4: #b96d92;
+}
+
+/* OCEAN — #1a7285 → #227f9a → #366eaa → #4c5ca1 → #2c8b9e */
+.pb-menu[data-pb-palette="ocean"] {
+  --pb-menu-gradient-0: #1a7285;
+  --pb-menu-gradient-1: #227f9a;
+  --pb-menu-gradient-2: #366eaa;
+  --pb-menu-gradient-3: #4c5ca1;
+  --pb-menu-gradient-4: #2c8b9e;
+}
+
+/* SUNSET — #96538f → #b64f75 → #c85c51 → #c4823f → #ba9b4b */
+.pb-menu[data-pb-palette="sunset"] {
+  --pb-menu-gradient-0: #96538f;
+  --pb-menu-gradient-1: #b64f75;
+  --pb-menu-gradient-2: #c85c51;
+  --pb-menu-gradient-3: #c4823f;
+  --pb-menu-gradient-4: #ba9b4b;
+}

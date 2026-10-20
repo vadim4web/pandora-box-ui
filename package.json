@@ -1,0 +1,56 @@
+{
+  "name": "pandora-box-ui",
+  "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vadim4web/pandora-box-ui.git"
+  },
+  "homepage": "https://github.com/vadim4web/pandora-box-ui#readme",
+  "version": "0.2.0",
+  "description": "CSS-only pseudo-3D menu with alpha cutouts, editable items and a standalone Monaco playground",
+  "type": "module",
+  "style": "./dist/pandora-box-ui.css",
+  "exports": {
+    "./pandora-box-ui.css": "./dist/pandora-box-ui.css",
+    "./pandora-menu.css": "./src/pandora-menu.css",
+    "./pandora-themes.css": "./src/pandora-themes.css",
+    "./pandora-metals.css": "./src/pandora-metals.css",
+    "./pandora-palettes.css": "./src/pandora-palettes.css",
+    "./base.css": "./dist/pandora-box-ui.base.css"
+  },
+  "files": [
+    "src",
+    "dist",
+    "bin",
+    "scripts",
+    "docs",
+    "examples",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "keywords": [
+    "css",
+    "menu",
+    "navigation",
+    "3d",
+    "ui",
+    "no-dependencies"
+  ],
+  "scripts": {
+    "build": "node scripts/build-css.mjs",
+    "demo": "node scripts/serve.mjs",
+    "check": "node scripts/check.mjs",
+    "prepack": "npm run build",
+    "postinstall": "node scripts/postinstall.mjs",
+    "test": "node scripts/test.mjs",
+    "test:browser": "node scripts/test-browser.mjs"
+  },
+  "bin": {
+    "pandora-box-ui": "./bin/pandora-box-ui.mjs"
+  }
+}

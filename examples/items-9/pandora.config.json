@@ -1,0 +1,31 @@
+{
+  "format": "pandora-box-ui",
+  "version": 3,
+  "state": {
+    "metal": "gold",
+    "palette": "rainbow",
+    "itemCount": 9,
+    "textMode": "cutout",
+    "iconMode": "normal",
+    "maskScale": 1,
+    "maskX": 50,
+    "maskY": 50,
+    "maskOpacity": 1,
+    "textIdle": "#fff8d6",
+    "textHover": "#ffffff",
+    "iconIdle": "#3b2b16",
+    "iconHover": "#ffffff",
+    "items": [
+      {"label": "Home", "url": "#home", "mask": null, "variables": {}},
+      {"label": "Work", "url": "#work", "mask": null, "variables": {}},
+      {"label": "Lab", "url": "#lab", "mask": null, "variables": {}},
+      {"label": "Studio", "url": "#studio", "mask": null, "variables": {}},
+      {"label": "Shop", "url": "#shop", "mask": null, "variables": {}},
+      {"label": "Blog", "url": "#blog", "mask": null, "variables": {"--pb-menu-hover-icon-color": "#fff4c2"}},
+      {"label": "Team", "url": "#team", "mask": null, "variables": {}},
+      {"label": "About", "url": "#about", "mask": null, "variables": {}},
+      {"label": "Contact", "url": "#contact", "mask": null, "variables": {"--pb-menu-icon-color": "#6b351c"}}
+    ]
+  },
+  "variables": {"--pb-menu-font-size": "36px", "--pb-menu-item-overlap": "1px"}
+}
