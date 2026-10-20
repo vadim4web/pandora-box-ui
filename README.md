@@ -35,7 +35,7 @@ Optional exact-color overrides are `--pandora-menu-top`, `--pandora-menu-side`, 
 
 ## Geometry notes
 
-The menu uses `em` dimensions so its faces scale together. Keep the top-face correction `calc(100% + 0.125em - 1px)` and transform order when changing the implementation. The demo's `body` and scene both match the viewport width; mobile text inflation is controlled in `demo.css`.
+The side and top share one depth vector: one quarter of the item's width horizontally, with `--_pandora-menu-depth-rise` controlling its slope. Their transform origins anchor both faces to the front corners, so the joins scale together without pixel offsets. `--_pandora-menu-side-scale` preserves the original icon proportions; its inverse compensates the side's height. These are internal projection constants. The demo's `body` and scene both match the viewport width; mobile text inflation is controlled in `demo.css`.
 
 Adjacent items overlap by `--pandora-menu-item-overlap` (default `1px`). Set it to `0px` for the original spacing, or adjust it on a menu instance to tune row density.
 

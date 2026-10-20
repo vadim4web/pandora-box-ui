@@ -23,6 +23,10 @@
   --pandora-menu-color-duration: 1s;
   --pandora-menu-shadow-duration: 0.75s;
 
+  /* Shared depth projection; retain the original side icon proportions. */
+  --_pandora-menu-depth-rise: 0.4336708882;
+  --_pandora-menu-side-scale: 0.9681476404;
+
   font-family: 'Times New Roman', Times, serif;
   font-weight: bolder;
   /* Original landscape line box: 55px at a 48px font size. */
@@ -72,9 +76,9 @@
   z-index: inherit;
   content: "";
   top: 0;
-  left: calc(-38% - 0.02em - 1px);
+  left: -50%;
   width: 50%;
-  height: calc(100% + 2px);
+  height: calc(100% / var(--_pandora-menu-side-scale));
   background-color: var(--_pandora-menu-side);
   background-image: var(--pandora-menu-icon, none);
   background-position: center;
@@ -84,34 +88,25 @@
   transition:
     box-shadow var(--pandora-menu-color-duration),
     background-color var(--pandora-menu-color-duration);
-  transform:
-    rotateX(14.5deg)
-    rotateY(60deg)
-    translateX(0.125em)
-    translateY(-0.5em);
+  transform-origin: 100% 0;
+  transform: matrix(0.5, calc(var(--_pandora-menu-depth-rise) / 2), 0, var(--_pandora-menu-side-scale), 0, 0);
 }
 
 .pandora-menu__item::after {
   position: absolute;
   z-index: inherit;
   content: "";
-  top: -26%;
-  left: calc(29% + 1px);
-  height: 50%;
-  width: calc(100% + 0.125em - 1px);
+  bottom: 100%;
+  left: 0;
+  width: 100%;
+  aspect-ratio: 4;
   background: var(--_pandora-menu-top);
   box-shadow: 0 0 0.0625em var(--_pandora-menu-top);
   transition:
     background-color var(--pandora-menu-color-duration),
     box-shadow var(--pandora-menu-color-duration);
-  transform:
-    rotateX(102deg)
-    rotateY(10deg)
-    rotateZ(39deg)
-    scaleX(1.29)
-    scaleY(6)
-    translateY(160%)
-    translateZ(-1.0625em);
+  transform-origin: 0 100%;
+  transform: matrix(1, 0, 1, var(--_pandora-menu-depth-rise), 0, 0);
 }
 
 .pandora-menu__item:hover {
