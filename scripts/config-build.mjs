@@ -3,6 +3,7 @@ import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { normalizeMenuState, renderMenuHTML, renderItemsCSS } from './menu-model.mjs';
+import { applyDefaultTheme, createDefaultState } from './default-theme.mjs';
 
 export const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const encoding = 'utf8';
@@ -11,7 +12,10 @@ const packageVersion = JSON.parse(read(path.join(packageRoot, 'package.json'))).
 
 export function bundleBase() {
   const names = ['pandora-menu.css', 'pandora-metals.css', 'pandora-palettes.css'];
-  const css = names.map(name => `/* === ${name} === */\n${read(path.join(packageRoot,'src',name)).trim()}`).join('\n\n');
+  const css = names.map(name => {
+    const source = read(path.join(packageRoot,'src',name));
+    return `/* === ${name} === */\n${(name === 'pandora-menu.css' ? applyDefaultTheme(source) : source).trim()}`;
+  }).join('\n\n');
   // Project overrides are UNLAYERED. They override defaults/presets regardless
   // of selector specificity; no !important is needed, and base remains portable.
   return `/* PandoraBox UI v${packageVersion} · CSS-only base · layer: pandora-base */\n@layer pandora-base {\n${css}\n}\n`;
@@ -94,7 +98,7 @@ export function compileProjectConfig(projectRoot) {
     if (typeof customCore === 'string' && customCore.trim()) {
       coreCSS = `\n/* === CUSTOM CORE FROM PLAYGROUND === */\n@layer pandora-custom-core {\n${customCore}\n}\n`;
     }
-    const menuState = normalizeMenuState(json.state || {});
+    const menuState = normalizeMenuState(json.state || createDefaultState());
     const stateVariables = json.state?.variables || {};
     const projectVariables = json.variables || {};
     declarationEntries(stateVariables);
@@ -102,8 +106,8 @@ export function compileProjectConfig(projectRoot) {
     const customVariables = { ...stateVariables, ...projectVariables };
     // Per-item tokens include precomputed SVG masks. They work in a plain
     // stylesheet, with no editor or JavaScript on the consuming website.
-    if (json.state && ['items','itemCount','textMode','iconMode','maskScale','maskX','maskY','maskOpacity'].some(key => key in json.state)) {
-      const itemsCSS = renderItemsCSS({ ...menuState, variables: customVariables, fontSize: json.state.fontSize });
+    if (!json.state || ['items','itemCount','textMode','iconMode','maskScale','maskX','maskY','maskOpacity'].some(key => key in json.state)) {
+      const itemsCSS = renderItemsCSS({ ...menuState, variables: customVariables, fontSize: json.state?.fontSize ?? createDefaultState().fontSize });
       if (itemsCSS.trim()) parts.push(`/* Menu items and alpha masks */\n${itemsCSS}`);
     }
     const vars = {...stateTokens(json.state), ...customVariables};
@@ -135,8 +139,10 @@ const escapeAttribute = value => String(value).replaceAll('&', '&amp;').replaceA
 export function renderProjectHTML(projectRoot, stylesheet = './pandora-box-ui.generated.css') {
   const { json, files } = readProjectConfig(projectRoot);
   if (json?.format && json.format !== 'pandora-box-ui') throw Error('Unsupported config format');
-  const state = { ...json?.state, ...normalizeMenuState(json?.state || {}) };
-  const markup = renderMenuHTML(state);
+  const rawState = json?.state || createDefaultState();
+  const state = { ...rawState, ...normalizeMenuState(rawState) };
+  let markup = renderMenuHTML(state);
+  if (!json?.state) markup = markup.replace(/ data-pb-(?:metal|palette)="[^"]*"/g, '');
   const html = `<!doctype html>\n<html lang="en">\n<head>\n  <meta charset="utf-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1">\n  <title>PandoraBox UI</title>\n  <link rel="stylesheet" href="${escapeAttribute(stylesheet)}">\n  <style>body { display: grid; place-items: center; min-height: 100vh; margin: 0; background: radial-gradient(circle, #535863, #151820); } .my-navigation { padding: 5rem 3rem; }</style>\n</head>\n<body>\n${markup}\n</body>\n</html>\n`;
   return { html, files };
 }

@@ -6,6 +6,8 @@ Repository: [vadim4web/pandora-box-ui](https://github.com/vadim4web/pandora-box-
 
 **Live demo:** [PandoraBox UI Playground](https://vadim4web.github.io/pandora-box-ui/demo/).
 
+The default theme is Obsidian with the Solar hover palette, Cutout text/icons, a 60px font, −12% hover offset, 1.5px item overlap and a 0.95 mask scale. Fresh sessions and **Reset** use this theme. Existing saved settings and code drafts are retained; use Reset to apply the new defaults to an existing session.
+
 ## Playground
 
 From this source checkout, run `npm run demo` and open `http://localhost:8765/demo/`. In Windows PowerShell, use `npm.cmd` if local execution policy blocks `npm.ps1`. Alternatively serve `demo/index.html` with VS Code Live Server. A custom static server must serve `.mjs` files with a JavaScript MIME type. The first panel, **Code · Monaco Editor**, starts open. Other settings remain collapsible. Monaco loads from a pinned CDN; an editable textarea retains Apply, Save and import/export when the CDN is unavailable.

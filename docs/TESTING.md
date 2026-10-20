@@ -5,7 +5,7 @@ Verified on 20 October 2026 using Node 22.20.0, npm 10.9.3 and installed Google 
 The following pass:
 
 - `npm run build`, `npm test`, and `npm run check`.
-- `npm run test:browser`: 52 checks, including all 72 combinations of 2–9 items and independent text/icon modes; descending stacking and original face matrices; hover and side-only shading; keyboard links and reduced motion. Every position in each menu count is checked against its expected OKLCH palette sample.
+- `npm run test:browser`: 55 checks, including exact default-theme CSS tokens and Reset behavior; all 72 combinations of 2–9 items and independent text/icon modes; descending stacking and original face matrices; hover and side-only shading; keyboard links and reduced motion. Every position in each menu count is checked against its expected OKLCH palette sample.
 - Pixel checks show actual red and blue scene backgrounds through text and icon openings on the first, middle and last rows. Hidden adjacent top faces no longer fill the openings.
 - Enter/Escape, plain-text paste, preview-to-HTML/state synchronization, retained hidden items, editable Config/HTML/Core documents, manual-draft preservation and custom token/material changes.
 - CSS/JSON imports, export contents and browser reload restoration; real CDN-backed Monaco and offline textarea fallback.

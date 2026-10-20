@@ -6,6 +6,7 @@ import path from 'node:path';
 import {fileURLToPath, pathToFileURL} from 'node:url';
 import {inflateSync} from 'node:zlib';
 import {renderCSS, renderProjectHTML, bundleBase, compileProjectConfig} from './config-build.mjs';
+import {defaultTokens} from './default-theme.mjs';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 let playwright;
 try { playwright = await import('playwright'); }
@@ -47,6 +48,9 @@ try {
   await page.route('https://cdn.jsdelivr.net/**',route=>route.abort());
   await page.goto(url+'/demo/');
   await page.waitForFunction(()=>window.PandoraStudio);
+  check('Fresh Playground uses the supplied Obsidian/Solar Cutout defaults',await page.evaluate(()=>{const s=PandoraPlayground.getState();return s.metal==='obsidian'&&s.palette==='solar'&&s.textMode==='cutout'&&s.iconMode==='cutout'&&s.fontSize===60&&s.offset===-12&&s.overlap===1.5&&s.maskScale===.95;}));
+  check('Fresh preview CSS matches every supplied default token',await page.locator('#menu').evaluate((el,tokens)=>Object.entries(tokens).every(([name,value])=>getComputedStyle(el).getPropertyValue(name).trim()===value),defaultTokens()));
+  await page.locator('.scene-panel').screenshot({path:path.join(out,'default-theme.png')});
   check('Offline editor fallback is editable', await page.locator('#editor-fallback').isEditable());
   check('Monaco panel is first and open', await page.locator('details.control-panel').first().evaluate(el=>el.id==='panel-code' && el.open));
   for (let count=2;count<=9;count++) {
@@ -90,6 +94,9 @@ try {
     }
   }
   await page.evaluate(()=>document.querySelector('#side-pixel-test').remove());
+  await page.evaluate(()=>PandoraPlayground.importState({...PandoraPlayground.getState(),itemCount:5,textMode:'normal',iconMode:'normal'}));
+  await page.locator('#reset-all').click();
+  check('Reset restores the supplied Cutout theme',await page.evaluate(()=>{const s=PandoraPlayground.getState();return s.metal==='obsidian'&&s.palette==='solar'&&s.textMode==='cutout'&&s.iconMode==='cutout'&&s.fontSize===60&&s.maskScale===.95&&s.variables['--pb-menu-top-light']==='23%';}));
   await page.evaluate(()=>PandoraPlayground.importState({...PandoraPlayground.getState(),itemCount:5,textMode:'normal',iconMode:'normal'}));
   const beforeHover=await page.locator('#menu > li').evaluateAll(items=>items.map(el=>({front:getComputedStyle(el.querySelector('a'),'::before').backgroundColor,top:getComputedStyle(el,'::after').backgroundColor,side:getComputedStyle(el,'::before').backgroundColor})));
   await page.locator('#menu a').nth(1).hover();

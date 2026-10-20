@@ -2,6 +2,10 @@
 
 ## CSS surfaces and alpha
 
+The default theme is defined in `scripts/default-theme.mjs` and shared by the Playground and CSS build. It uses Obsidian/Solar, five items, Cutout text/icons, 60px typography, −12% hover movement, 1.5px overlap and a 0.95 mask scale. Lighting follows the supplied configuration's final declarations: top light 23%, side shade 30%, edge light 19%. Independent idle/hover text colors are `#305085`/`#302565`; icon colors are `#2657a6`/`#2b00ff`.
+
+`npm run build` updates the managed default-theme portion of `src/pandora-menu.css` and both distribution bundles. Default masks target enhanced label markup with low specificity, so legacy direct-text links retain normal rendering and exported configuration masks can replace the defaults. The baked five-item label masks match Home, Projects, Lab, About and Contact; export matching CSS after changing their content. Explicit metal/palette attributes remain preset overrides. Persisted Playground settings and drafts are not cleared by a default-theme update; Reset restores the current default state.
+
 Normal mode preserves legacy markup and geometry. New exported links contain a `.pb-menu__label` span. Their front finish is painted by the link's separate `::before` surface. The item's `::before` still paints the side, and its `::after` still paints the top using the original projection matrices.
 
 Text cutout applies an inverse SVG alpha mask to the front paint. Icon cutout applies an inverse SVG alpha mask to the side paint. Visible label/icon paint is hidden in cutout mode; the corresponding surface has actual transparent pixels. The mask is applied to that individual surface rather than the whole item, preserving the other faces and the 3D transforms. Both `mask-image` and `-webkit-mask-image` are emitted. The inverse alpha is generated inside a self-contained SVG, so the runtime does not depend on differences between CSS `mask-composite` operators.

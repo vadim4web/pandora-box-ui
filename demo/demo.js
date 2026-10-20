@@ -1,6 +1,7 @@
 /* PandoraBox UI v0.2.0 — only for the interactive demo.
    The actual Pandora Menu component remains CSS-only. */
 import { normalizeMenuState, renderMenuHTML, renderItemsCSS, sanitizeSVG, safeURL } from '../scripts/menu-model.mjs';
+import { createDefaultState } from '../scripts/default-theme.mjs';
 (() => {
   'use strict';
   let menu = document.querySelector('#menu');
@@ -9,14 +10,7 @@ import { normalizeMenuState, renderMenuHTML, renderItemsCSS, sanitizeSVG, safeUR
   const PRIOR_STORAGE_KEY = 'pandora-box-ui:playground:v0.1.4';
   const metals = new Set([...document.querySelectorAll('[data-metal]')].map(el => el.dataset.metal));
   const palettes = new Set([...document.querySelectorAll('[data-palette]')].map(el => el.dataset.palette));
-  const defaults = () => ({
-    metal: 'steel', palette: 'rainbow',
-    metalCustom: '#808080',
-    customStops: ['#009db2','#40bbbc','#d8b52e','#ce7175','#a84aaf'],
-    textIdle: null, textHover: null, iconIdle: null, iconHover: null,
-    fontSize: 44, offset: -5, moveDuration: 857, colorDuration: 1000, overlap: 1,
-    ...normalizeMenuState({}), variables: {}
-  });
+  const defaults = createDefaultState;
   const colorVars = {
     textIdle: '--pb-menu-text',
     textHover: '--pb-menu-hover-text',
@@ -51,12 +45,15 @@ import { normalizeMenuState, renderMenuHTML, renderItemsCSS, sanitizeSVG, safeUR
       if (palettes.has(raw.palette)) clean.palette = raw.palette;
       if (normalizeHex(raw.metalCustom)) clean.metalCustom = normalizeHex(raw.metalCustom);
       if (Array.isArray(raw.customStops) && raw.customStops.length === 5 && raw.customStops.every(c => normalizeHex(c))) clean.customStops = raw.customStops.map(normalizeHex);
-      for (const name of Object.keys(colorVars)) if (normalizeHex(raw[name])) clean[name] = normalizeHex(raw[name]);
+      for (const name of Object.keys(colorVars)) {
+        if (raw[name] === null) clean[name] = null;
+        else if (normalizeHex(raw[name])) clean[name] = normalizeHex(raw[name]);
+      }
       for (const [name,[, ,min,max]] of Object.entries(sliderVars)) {
         if (typeof raw[name] === 'number' && Number.isFinite(raw[name])) clean[name] = Math.min(max,Math.max(min,raw[name]));
       }
     }
-    return Object.assign(clean, normalizeMenuState(raw || {}));
+    return Object.assign(clean, normalizeMenuState({...clean, ...(raw || {})}));
   }
   function loadState() {
     try {
@@ -139,7 +136,7 @@ import { normalizeMenuState, renderMenuHTML, renderItemsCSS, sanitizeSVG, safeUR
       else if (name === 'textIdle' && state.metal === 'custom') values[variable] = contrastText(state.metalCustom);
     }
     for (const [name,[variable,unit]] of Object.entries(sliderVars)) {
-      if (name !== 'fontSize' || state.fontSize !== defaults().fontSize) values[variable] = `${state[name]}${unit}`;
+      values[variable] = `${state[name]}${unit}`;
     }
     document.querySelector('#studio-generated-style').textContent =
       `.demo-nav .pb-menu {\n${Object.entries(values).map(([name,value]) => `  ${name}: ${value};`).join('\n')}\n}\n${renderItemsCSS(state, '.demo-nav .pb-menu')}`;

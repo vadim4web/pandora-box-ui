@@ -2,6 +2,8 @@
 
 ## 0.2.0
 
+- Applied the supplied Obsidian/Solar Cutout theme as the shared Playground/CSS default, including 60px typography, −12% hover movement, 1.5px overlap, independent colors and 0.95 mask scale. Reset uses the new defaults while saved drafts remain available.
+
 - Added independent Normal, Clip and true alpha Cutout modes for text and icons, embedded SVG masks and mask scale/position/opacity controls.
 - Added menu counts 2–9, per-item labels/URLs/SVGs/masks/variables, and retained inactive items when reducing the count.
 - Added direct plain-text label editing in an explicit Edit Mode, with Enter to commit and Escape to cancel.

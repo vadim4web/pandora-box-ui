@@ -1,6 +1,11 @@
-import { writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
 import { packageRoot, bundleBase } from './config-build.mjs';
+import { applyDefaultTheme } from './default-theme.mjs';
+const coreFile = path.join(packageRoot,'src','pandora-menu.css');
+const core = readFileSync(coreFile,'utf8');
+const updatedCore = applyDefaultTheme(core);
+if (core !== updatedCore) writeFileSync(coreFile,updatedCore);
 mkdirSync(path.join(packageRoot,'dist'), { recursive: true });
 const baseline = bundleBase();
 writeFileSync(path.join(packageRoot,'dist','pandora-box-ui.base.css'),baseline);
