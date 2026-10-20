@@ -190,7 +190,7 @@ import { createDefaultState } from '../scripts/default-theme.mjs';
     clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('visible'),2500);
   }
   document.querySelector('#reset-all').addEventListener('click',() => {
-    state = defaults(); syncMenu(); renderItemFields(); apply(); toast('Все настройки восстановлены');
+    state = defaults(); syncMenu(); renderItemFields(); apply(); toast('Default settings restored');
   });
   function exportCSS() {
     const lines = [
@@ -221,7 +221,7 @@ import { createDefaultState } from '../scripts/default-theme.mjs';
     getPalettes: () => [...palettes],
     getPresetValues: presetValues,
     importState: input => {
-      if (!input || typeof input !== 'object' || Array.isArray(input)) throw Error('Некорректный формат настроек');
+      if (!input || typeof input !== 'object' || Array.isArray(input)) throw Error('Invalid settings format');
       state = sanitizeState(input);
       syncMenu(); renderItemFields();
       apply();
@@ -231,7 +231,7 @@ import { createDefaultState } from '../scripts/default-theme.mjs';
     setMenu: replacement => {
       menu = replacement;
       const items = [...menu.children].filter(el => el.matches('li.pb-menu__item'));
-      if (items.length < 2 || items.length > 9) throw Error('Меню должно содержать от 2 до 9 пунктов');
+      if (items.length < 2 || items.length > 9) throw Error('A menu must contain 2 to 9 items');
       state.itemCount = items.length;
       items.forEach((li, i) => {
         const link = li.querySelector('.pb-menu__link');
@@ -248,13 +248,13 @@ import { createDefaultState } from '../scripts/default-theme.mjs';
     const code = exportCSS();
     try {
       await navigator.clipboard.writeText(code);
-      toast('CSS и HTML-подсказка скопированы');
+      toast('CSS and the HTML hint copied');
     } catch(_) {
       const text = document.createElement('textarea');
       text.value = code; text.style.position = 'fixed'; text.style.opacity = '0';
       document.body.appendChild(text); text.select();
       const ok = document.execCommand('copy'); text.remove();
-      toast(ok ? 'HTML + CSS скопированы в буфер обмена' : 'Не удалось скопировать — проверь доступ к буферу');
+      toast(ok ? 'HTML and CSS copied to the clipboard' : 'Copy failed; check clipboard access');
     }
   });
   function reflectMenuControls() {
@@ -288,7 +288,7 @@ import { createDefaultState } from '../scripts/default-theme.mjs';
       if (sanitizeSVG(icon.innerHTML) !== state.items[i].icon) icon.innerHTML = state.items[i].icon;
       label.contentEditable = editMode ? 'true' : 'false';
       label.setAttribute('spellcheck', 'false');
-      if (editMode) { label.setAttribute('role','textbox'); label.setAttribute('aria-label',`Название пункта ${i + 1}`); }
+      if (editMode) { label.setAttribute('role','textbox'); label.setAttribute('aria-label',`Item label ${i + 1}`); }
       else { label.removeAttribute('role'); label.removeAttribute('aria-label'); }
     });
     menu.dataset.pbEdit = String(editMode);
@@ -298,8 +298,8 @@ import { createDefaultState } from '../scripts/default-theme.mjs';
     host.replaceChildren();
     state.items.slice(0,state.itemCount).forEach((item,i) => {
       const group = document.createElement('details'); group.className = 'item-field';
-      const summary = document.createElement('summary'); summary.textContent = `${i+1}. ${item.label || '(без названия)'}`; group.append(summary);
-      for (const [key,title,multiline] of [['label','Название',false],['url','URL',false],['icon','SVG-иконка',true],['mask','SVG-маска (пусто — встроенная иконка)',true],['variables','CSS-параметры пункта (JSON)',true]]) {
+      const summary = document.createElement('summary'); summary.textContent = `${i+1}. ${item.label || '(untitled)'}`; group.append(summary);
+      for (const [key,title,multiline] of [['label','Label',false],['url','URL',false],['icon','SVG icon',true],['mask','SVG mask (empty uses the item icon)',true],['variables','Item CSS variables (JSON)',true]]) {
         const label = document.createElement('label'); label.textContent = title;
         const input = document.createElement(multiline ? 'textarea' : 'input');
         input.dataset.itemIndex = i; input.dataset.itemKey = key;
@@ -308,12 +308,12 @@ import { createDefaultState } from '../scripts/default-theme.mjs';
         input.addEventListener(key === 'label' ? 'input' : 'change', () => {
           try {
             let value = input.value;
-            if (key === 'variables') { value = JSON.parse(value || '{}'); if (!value || typeof value !== 'object' || Array.isArray(value)) throw Error('Нужен JSON-объект'); }
-            if (key === 'icon' || (key === 'mask' && value.trim())) { value = sanitizeSVG(value); if (!value) throw Error('Нужен SVG с безопасными path / shape элементами'); }
+            if (key === 'variables') { value = JSON.parse(value || '{}'); if (!value || typeof value !== 'object' || Array.isArray(value)) throw Error('A JSON object is required'); }
+            if (key === 'icon' || (key === 'mask' && value.trim())) { value = sanitizeSVG(value); if (!value) throw Error('Use an SVG containing safe paths or shapes'); }
             if (key === 'url') value = safeURL(value);
             state.items[i][key] = value || (key === 'mask' ? null : value);
             state = sanitizeState(state);
-            if (key === 'label') summary.textContent = `${i+1}. ${state.items[i].label || '(без названия)'}`;
+            if (key === 'label') summary.textContent = `${i+1}. ${state.items[i].label || '(untitled)'}`;
             input.setCustomValidity(''); syncMenu(); apply();
           } catch (error) { input.setCustomValidity(error.message); input.reportValidity(); }
         });

@@ -1,46 +1,85 @@
 # Distribution and publishing · PandoraBox UI
 
-The package is private and unpublished. `pandora-box-ui` is a provisional npm name. Before publishing, verify an available name/scope, confirm the repository/homepage metadata, verify the packed artifact, and deliberately remove `"private": true`. Building or packing does not publish a package.
+The project is configured for public publication as `pandora-box-ui@0.2.0`. The publishing metadata is ready. Building, testing and packing do not publish to npm.
+
+| Metadata | Value |
+| --- | --- |
+| Name / current version | `pandora-box-ui` / `0.2.0` |
+| Author / license | `vadim4web` / `MIT` |
+| Repository | `git+https://github.com/vadim4web/pandora-box-ui.git` |
+| Homepage | `https://vadim4web.github.io/pandora-box-ui/` |
+| Issues | `https://github.com/vadim4web/pandora-box-ui/issues` |
+| Publish registry / access | `https://registry.npmjs.org/` / `public` |
+
+The blocking `private:true` field has been removed. `publishConfig` targets the public npm registry. `prepublishOnly` runs the build, Node tests and package checks before publication. The runtime tarball includes CSS, CLI/build helpers, examples and documentation; it excludes the Playground page, temporary files, credentials and browser-test artifacts.
 
 ## Publish the demo
 
-The live Playground is [https://vadim4web.github.io/pandora-box-ui/demo/](https://vadim4web.github.io/pandora-box-ui/demo/). GitHub Pages publishes the root of the `main` branch; pushing updates to `demo/`, `src/` and `scripts/menu-model.mjs` updates the demo after the Pages build finishes. The root URL retains the earlier prototype.
+The live Playground is [https://vadim4web.github.io/pandora-box-ui/](https://vadim4web.github.io/pandora-box-ui/). GitHub Pages publishes the root of `main`. The root `index.html` contains the full app and loads assets from `demo/`, `src/` and `scripts/` using paths that work under the repository's Pages URL. The old `/demo/` URL redirects to the root. The earlier prototype is archived at `examples/legacy-prototype.html`.
 
 ## First npm publication
 
-Create an npm account and enable two-factor authentication. Interactive publication requires 2FA; see [npm's publishing authentication requirements](https://docs.npmjs.com/requiring-2fa-for-package-publishing-and-settings-modification/).
+Create an npm account and enable two-factor authentication. Interactive publication requires 2FA; see [npm's authentication requirements](https://docs.npmjs.com/requiring-2fa-for-package-publishing-and-settings-modification/).
 
-From the source checkout, use these commands in Windows PowerShell:
+From the source checkout, use these commands in Windows PowerShell. Use `npm` instead of `npm.cmd` in other shells:
 
 ```powershell
-npm.cmd login
+npm.cmd login --registry=https://registry.npmjs.org/
 npm.cmd whoami
 npm.cmd view pandora-box-ui version --registry=https://registry.npmjs.org/
 ```
 
-The registry returned 404 for `pandora-box-ui` on 20 October 2026. A 404 means there is no visible registered package under that name; it does not reserve the name. If a package now exists, verify that your npm account owns it or choose an available name before publishing. Your npm username can differ from your GitHub username.
+Check the registry immediately before publishing. A 404 means there is no visible registered package under that name; it does not reserve the name. If a package exists, verify that your npm account owns it. Your npm username can differ from your GitHub username. Keep the unscoped `pandora-box-ui` name unless you also update the CLI/postinstall paths and documented imports for a rename.
 
 When the package name is confirmed:
 
 ```powershell
-npm.cmd pkg delete private
-npm.cmd run build
-npm.cmd test
-npm.cmd run check
+npm.cmd run prepublishOnly
 npm.cmd pack --dry-run
+npm.cmd publish --dry-run
 npm.cmd publish --access public
+npm.cmd view pandora-box-ui@0.2.0 version dist.tarball
+```
+
+Run each command after the preceding command succeeds. Inspect the file list and confirm version `0.2.0` before the real publish. `npm publish --dry-run` validates the publishing flow without uploading the package. `npm publish --access public` performs the upload; complete npm's authentication/2FA prompt. No metadata edits or removal of `private` are required. Demo deployment does not publish the npm package.
+
+After a successful publication, the package page will be `https://www.npmjs.com/package/pandora-box-ui`. Test it in a consuming app:
+
+```powershell
+npm.cmd install pandora-box-ui@0.2.0
+```
+
+```js
+import 'pandora-box-ui/pandora-box-ui.css';
+```
+
+For direct CDN use after publication:
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pandora-box-ui@0.2.0/dist/pandora-box-ui.css">
+```
+
+Include matching navigation HTML and any exported project configuration stylesheet. The runtime requires no Playground JavaScript.
+
+## Publish an update
+
+Start from a clean checkout. Update the code and CHANGELOG, then increment the version:
+
+```powershell
+npm.cmd version patch
+npm.cmd run prepublishOnly
+npm.cmd publish --access public
+git push origin main --follow-tags
 npm.cmd view pandora-box-ui version
 ```
 
-Run each command after the preceding command succeeds. `npm publish` publishes version `0.2.0`; complete the npm authentication/2FA prompt. The project remains `private:true` until you explicitly remove that property. No npm publication is performed by the demo deployment.
-
-After publishing, commit the package metadata change. For a later release, increment `version` before publishing; an already published name/version cannot be reused. The current CLI/postinstall assumes the unscoped `pandora-box-ui` installation path, so a scoped rename also requires updating that path and documenting the scoped imports.
+Use `minor` or `major` instead of `patch` when appropriate. `npm version` creates the version commit and tag; `--follow-tags` uploads them after publication succeeds. An already published name/version cannot be reused. Consuming apps install the new version through their normal dependency update process. See [npm's publishing guide](https://docs.npmjs.com/creating-and-publishing-unscoped-public-packages/) for registry and authentication details.
 
 ## Separate runtime and development tools
 
 The runtime is the CSS component and its presets. `dist/pandora-box-ui.css` and `dist/pandora-box-ui.base.css` are self-contained base stylesheets. Generated per-item SVG masks are CSS data URLs. Application HTML contains navigation links, label spans and SVG icons. Production pages need no JavaScript, Monaco, mask generator or Playground code.
 
-The development Playground in `demo/` edits content/settings and three independent code documents. The dependency-free Node module `scripts/menu-model.mjs` is shared by the browser tool and the build compiler so generated masks and item data use the same rules. It runs during development/build only. CLI and compiler files are included in npm's package so consumer builds can read root configuration.
+The root Playground uses assets in `demo/` to edit content/settings and three independent code documents. The dependency-free Node module `scripts/menu-model.mjs` is shared by the browser tool and the build compiler so generated masks and item data use the same rules. It runs during development/build only. CLI and compiler files are included in npm's package so consumer builds can read root configuration.
 
 ## Root configuration priority
 

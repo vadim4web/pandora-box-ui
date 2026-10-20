@@ -45,9 +45,6 @@ const server = createServer(async (request,response) => {
   if (/[\u0000-\u001f\\:]/.test(pathname) || pathname.split('/').some(segment => segment.startsWith('.'))) {
     reply(403,'Forbidden'); return;
   }
-  if (pathname === '/') {
-    response.writeHead(302, {Location:'/demo/','Cache-Control':'no-store'}); response.end(); return;
-  }
   let filename = path.resolve(projectRoot,`.${pathname}`);
   if (!insideProject(filename)) { reply(403,'Forbidden'); return; }
   try {
@@ -83,4 +80,4 @@ server.on('error', error => {
   console.error(error.code === 'EADDRINUSE' ? `Port ${port} is already in use. Choose another port.` : error.message);
   process.exitCode = 1;
 });
-server.listen(port,'127.0.0.1',() => console.log(`PandoraBox UI Playground: http://localhost:${port}/demo/`));
+server.listen(port,'127.0.0.1',() => console.log(`PandoraBox UI Playground: http://localhost:${port}/`));

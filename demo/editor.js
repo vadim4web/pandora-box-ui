@@ -91,7 +91,7 @@ import { normalizeMenuState, renderItemsCSS, safeURL, sanitizeSVG } from '../scr
     const doc = docs[active];
     doc.draft = readActive();
     doc.dirty = doc.draft !== doc.applied;
-    notice(`${labels[active]} изменён. Нажми Apply для просмотра изменений.`, 'warning');
+    notice(`${labels[active]} changed. Select Apply to preview the changes.`, 'warning');
     schedulePersist();
   }
   textarea.addEventListener('input', changeFromEditor);
@@ -112,18 +112,18 @@ import { normalizeMenuState, renderItemsCSS, safeURL, sanitizeSVG } from '../scr
     textarea.scrollTop = 0; textarea.scrollLeft = 0;
     if (editor && models[next]) { editor.setModel(models[next]); editor.updateOptions({ readOnly:false }); }
     engineStatus.textContent = editor ? `Monaco Editor · ${next === 'html' ? 'HTML' : 'CSS'}` : engineStatus.textContent;
-    notice(docs[next].dirty ? 'Есть неприменённые изменения.' : `Редактируй ${labels[next]}, затем Apply или Save.`, docs[next].dirty ? 'warning' : '');
+    notice(docs[next].dirty ? 'There are unapplied changes.' : `Edit ${labels[next]}, then select Apply or Save.`, docs[next].dirty ? 'warning' : '');
     schedulePersist();
   }
   document.querySelectorAll('[data-code-tab]').forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.codeTab)));
 
   const forPreview = css => css.replaceAll('.my-navigation', '.demo-nav');
   function validateCSS(css) {
-    if (!css.trim()) throw Error('CSS пуст.');
-    if ((css.match(/\{/g) || []).length !== (css.match(/\}/g) || []).length) throw Error('Количество скобок { } не совпадает.');
+    if (!css.trim()) throw Error('CSS is empty.');
+    if ((css.match(/\{/g) || []).length !== (css.match(/\}/g) || []).length) throw Error('Opening and closing CSS braces do not match.');
     const sheet = new CSSStyleSheet();
     sheet.replaceSync(forPreview(css));
-    if (!sheet.cssRules.length) throw Error('Не удалось распознать CSS-правила.');
+    if (!sheet.cssRules.length) throw Error('No valid CSS rules were found.');
     return sheet;
   }
   function cssToState(css) {
@@ -210,7 +210,7 @@ import { normalizeMenuState, renderItemsCSS, safeURL, sanitizeSVG } from '../scr
     const nav = parsed.querySelector('nav');
     const ul = nav?.querySelector('ul.pb-menu');
     const count = ul ? [...ul.children].filter(el => el.matches('li.pb-menu__item')).length : 0;
-    if (!nav || !ul || count < 2 || count > 9) throw Error('Нужны <nav>, <ul class="pb-menu"> и от 2 до 9 <li class="pb-menu__item">.');
+    if (!nav || !ul || count < 2 || count > 9) throw Error('Include <nav>, <ul class="pb-menu"> and 2 to 9 <li class="pb-menu__item"> elements.');
     const wantedMetal = ul.getAttribute('data-pb-metal');
     const wantedPalette = ul.getAttribute('data-pb-palette');
     const wantedTextMode = ul.getAttribute('data-pb-text-mode');
@@ -275,13 +275,13 @@ import { normalizeMenuState, renderItemsCSS, safeURL, sanitizeSVG } from '../scr
     docs[key].draft = value;
     try {
       applyTab(key, value);
-      notice(`${labels[key]} применён к превью. Сохрани файл через Save, если нужно использовать его в проекте.`);
+      notice(`${labels[key]} applied to the preview. Select Save to download it for your project.`);
       persist();
-      api.toast(`${labels[key]} применён`);
+      api.toast(`${labels[key]} applied`);
       return true;
     } catch (error) {
       docs[key].dirty = true;
-      notice(`Не удалось применить ${labels[key]}: ${error.message}`, 'error');
+      notice(`Could not apply ${labels[key]}: ${error.message}`, 'error');
       schedulePersist();
       return false;
     }
@@ -300,15 +300,15 @@ import { normalizeMenuState, renderItemsCSS, safeURL, sanitizeSVG } from '../scr
       t.value = value; t.style.position = 'fixed'; t.style.opacity = '0';
       document.body.append(t); t.select();
       const ok = document.execCommand('copy'); t.remove();
-      if (!ok) throw Error('Буфер обмена недоступен');
+      if (!ok) throw Error('Clipboard access is unavailable');
     }
-    api.toast('Код скопирован');
+    api.toast('Code copied');
   }
   function saveActive() {
     docs[active].draft = readActive();
     download(docs[active].draft, filenames[active], active === 'html' ? 'text/html' : 'text/css');
     persist();
-    api.toast(`${filenames[active]} сохранён в Downloads`);
+    api.toast(`${filenames[active]} saved to Downloads`);
   }
   window.PandoraStudio = {
     copyCSS: () => { if (active === 'config') docs.config.draft = readActive(); return copyText(docs.config.draft); },
@@ -329,38 +329,38 @@ import { normalizeMenuState, renderItemsCSS, safeURL, sanitizeSVG } from '../scr
   textarea.addEventListener('keydown', shortcuts);
 
   $('#sync-from-controls').addEventListener('click', () => {
-    if (docs.config.dirty && !confirm('Заменить изменения в Config CSS настройками панелей?')) return;
+    if (docs.config.dirty && !confirm('Replace the Config CSS draft with the current control settings?')) return;
     docs.config.backup = docs.config.draft;
     docs.config.applied = '';
     appliedConfigStyle.textContent = '';
     docs.config.dirty = false;
     setDraft('config', api.exportCSS());
     switchTab('config');
-    api.toast('Config CSS пересоздан из настроек');
+    api.toast('Config CSS generated from the controls');
   });
   $('#restore-draft').addEventListener('click', () => {
     const backup = docs[active].backup;
-    if (typeof backup !== 'string') { notice('Для этой вкладки ещё нет предыдущего черновика.'); return; }
+    if (typeof backup !== 'string') { notice('There is no previous draft for this tab.'); return; }
     docs[active].backup = docs[active].draft;
     setDraft(active, backup); docs[active].dirty = backup !== docs[active].applied;
-    notice('Предыдущий черновик восстановлен. Apply применит его к превью.', 'warning');
+    notice('Previous draft restored. Select Apply to update the preview.', 'warning');
   });
   $('#export-settings').addEventListener('click', () => {
     docs[active].draft = readActive();
     const data = { format:'pandora-box-ui', version:3, state:api.getState(), documents:docs, active };
     download(JSON.stringify(data,null,2)+'\n','pandora.config.json','application/json');
-    api.toast('Настройки и все три документа экспортированы');
+    api.toast('Settings and all three documents exported');
   });
   $('#import-settings').addEventListener('change', async event => {
     const file = event.target.files?.[0]; event.target.value = '';
     if (!file) return;
-    if (file.size > 400000) { notice('Лимит импорта — 400 KB.','error'); return; }
+    if (file.size > 400000) { notice('The import limit is 400 KB.','error'); return; }
     try {
       const source = await file.text();
       const lower = file.name.toLowerCase();
       if (lower.endsWith('.json')) {
         const incoming = JSON.parse(source);
-        if (incoming.format && incoming.format !== 'pandora-box-ui') throw Error('Неизвестный формат JSON');
+        if (incoming.format && incoming.format !== 'pandora-box-ui') throw Error('Unknown JSON format');
         if (incoming.state) {
           suppressControls = true;
           try { api.importState(incoming.state); }
@@ -396,18 +396,18 @@ import { normalizeMenuState, renderItemsCSS, safeURL, sanitizeSVG } from '../scr
           if (value) { applyTab(key, value); setDraft(key, imported.draft); docs[key].dirty = imported.dirty; }
         }
         switchTab(tabNames.includes(incoming.active) ? incoming.active : 'config');
-        notice('JSON восстановлен в превью. Неприменённые черновики сохранены отдельно.');
+        notice('JSON restored in the preview. Unapplied drafts remain separate.');
       } else if (lower.endsWith('.html')) {
         docs.html.backup = docs.html.draft; setDraft('html',source); docs.html.dirty = true; switchTab('html');
-        notice('HTML импортирован. Нажми Apply HTML.','warning');
+        notice('HTML imported. Select Apply HTML.','warning');
       } else if (lower.endsWith('.css')) {
         const key = active === 'core' ? 'core' : 'config';
         docs[key].backup = docs[key].draft; setDraft(key,source); docs[key].dirty = true; switchTab(key);
-        notice(`${labels[key]} загружен. Нажми Apply.`, 'warning');
-      } else throw Error('Поддерживаются .css, .html и .json');
+        notice(`${labels[key]} loaded. Select Apply.`, 'warning');
+      } else throw Error('Supported file types: .css, .html and .json');
       persist();
-      api.toast('Файл импортирован');
-    } catch(error) { notice(`Ошибка импорта: ${error.message}`, 'error'); }
+      api.toast('File imported');
+    } catch(error) { notice(`Import error: ${error.message}`, 'error'); }
   });
 
   document.addEventListener('pb-studio:controls-changed', () => {
@@ -421,7 +421,7 @@ import { normalizeMenuState, renderItemsCSS, safeURL, sanitizeSVG } from '../scr
     docs.html.applied = currentMarkup();
     if (!docs.html.dirty) { docs.html.backup ||= docs.html.draft; setDraft('html', docs.html.applied); }
     const dirty = docs.config.dirty || docs.html.dirty;
-    notice(dirty ? 'Превью обновлено. Ручные черновики сохранены; Apply применит их отдельно.' : 'Настройки, HTML и редактор синхронизированы.', dirty ? 'warning' : '');
+    notice(dirty ? 'Preview updated. Manual drafts are preserved; Apply uses them separately.' : 'Settings, HTML and editor are synchronized.', dirty ? 'warning' : '');
     schedulePersist();
   });
 
@@ -429,7 +429,7 @@ import { normalizeMenuState, renderItemsCSS, safeURL, sanitizeSVG } from '../scr
     const script = document.createElement('script');
     script.src = `${VS_BASE}/loader.js`;
     script.async = true;
-    script.onerror = () => { engineStatus.textContent = 'Offline textarea · CDN недоступен'; };
+    script.onerror = () => { engineStatus.textContent = 'Offline textarea · CDN unavailable'; };
     script.onload = () => {
       if (!window.require?.config) { engineStatus.textContent = 'Offline textarea'; return; }
       const workerScript = `self.MonacoEnvironment={baseUrl:'${VS_BASE.replace(/\/vs$/, '')}/'};importScripts('${VS_BASE}/base/worker/workerMain.js');`;
@@ -458,7 +458,7 @@ import { normalizeMenuState, renderItemsCSS, safeURL, sanitizeSVG } from '../scr
           $('#panel-code').addEventListener('toggle',()=>setTimeout(()=>editor?.layout(),60));
           window.addEventListener('pagehide',()=>{observer.disconnect(); URL.revokeObjectURL(workerUrl); Object.values(models).forEach(model=>model.dispose());});
         } catch (_) { engineStatus.textContent = 'Offline textarea · Monaco failed'; editor = null; }
-      },()=>{engineStatus.textContent='Offline textarea · CDN недоступен';});
+      },()=>{engineStatus.textContent='Offline textarea · CDN unavailable';});
     };
     document.head.append(script);
   }
@@ -477,9 +477,9 @@ import { normalizeMenuState, renderItemsCSS, safeURL, sanitizeSVG } from '../scr
     }
   }
   switchTab(active);
-  fetch('../src/pandora-menu.css')
+  fetch(new URL('../src/pandora-menu.css', import.meta.url))
     .then(r=>{if(!r.ok)throw Error('HTTP');return r.text();})
     .then(css=>{if(!hasRestoredCore) { setDraft('core',css); docs.core.dirty=false; }} )
-    .catch(()=>{if(!hasRestoredCore) setDraft('core','/* Открой через Live Server, чтобы загрузить Core CSS. */');});
+    .catch(()=>{if(!hasRestoredCore) setDraft('core','/* Serve the project over HTTP to load Core CSS. */');});
   initMonaco();
 })();

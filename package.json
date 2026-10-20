@@ -1,12 +1,19 @@
 {
   "name": "pandora-box-ui",
-  "private": true,
   "license": "MIT",
+  "author": "vadim4web",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vadim4web/pandora-box-ui.git"
   },
-  "homepage": "https://vadim4web.github.io/pandora-box-ui/demo/",
+  "homepage": "https://vadim4web.github.io/pandora-box-ui/",
+  "bugs": {
+    "url": "https://github.com/vadim4web/pandora-box-ui/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "version": "0.2.0",
   "description": "CSS-only pseudo-3D menu with alpha cutouts, editable items and a standalone Monaco playground",
   "type": "module",
@@ -46,11 +53,12 @@
     "demo": "node scripts/serve.mjs",
     "check": "node scripts/check.mjs",
     "prepack": "npm run build",
+    "prepublishOnly": "npm run build && npm test && npm run check",
     "postinstall": "node scripts/postinstall.mjs",
     "test": "node scripts/test.mjs",
     "test:browser": "node scripts/test-browser.mjs"
   },
   "bin": {
-    "pandora-box-ui": "./bin/pandora-box-ui.mjs"
+    "pandora-box-ui": "bin/pandora-box-ui.mjs"
   }
 }

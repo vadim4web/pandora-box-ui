@@ -2,15 +2,15 @@
 
 A CSS-only pseudo-3D navigation menu with independent idle metals, hover palettes, text/icon colors, SVG clipping and transparent cutouts. The standalone Playground provides Monaco editors and editable menu items. Production pages need only the exported HTML and CSS.
 
-Repository: [vadim4web/pandora-box-ui](https://github.com/vadim4web/pandora-box-ui). The current Playground is in `demo/`; the earlier root-level prototype is retained for compatibility.
+Repository: [vadim4web/pandora-box-ui](https://github.com/vadim4web/pandora-box-ui). The root `index.html` contains the full Playground. The earlier prototype is archived at [examples/legacy-prototype.html](examples/legacy-prototype.html).
 
-**Live demo:** [PandoraBox UI Playground](https://vadim4web.github.io/pandora-box-ui/demo/).
+**Live demo:** [PandoraBox UI Playground](https://vadim4web.github.io/pandora-box-ui/).
 
 The default theme is Obsidian with the Solar hover palette, Cutout text/icons, a 60px font, −12% hover offset, 1.5px item overlap and a 0.95 mask scale. Fresh sessions and **Reset** use this theme. Existing saved settings and code drafts are retained; use Reset to apply the new defaults to an existing session.
 
 ## Playground
 
-From this source checkout, run `npm run demo` and open `http://localhost:8765/demo/`. In Windows PowerShell, use `npm.cmd` if local execution policy blocks `npm.ps1`. Alternatively serve `demo/index.html` with VS Code Live Server. A custom static server must serve `.mjs` files with a JavaScript MIME type. The first panel, **Code · Monaco Editor**, starts open. Other settings remain collapsible. Monaco loads from a pinned CDN; an editable textarea retains Apply, Save and import/export when the CDN is unavailable.
+From this source checkout, run `npm run demo` and open `http://localhost:8765/`. In Windows PowerShell, use `npm.cmd` if local execution policy blocks `npm.ps1`. Alternatively serve the root `index.html` with VS Code Live Server. The old `/demo/` URL redirects to the root. The UI and documentation are English-only. A custom static server must serve `.mjs` files with a JavaScript MIME type. The first panel, **Code · Monaco Editor**, starts open. Other settings remain collapsible. Monaco loads from a pinned CDN; an editable textarea retains Apply, Save and import/export when the CDN is unavailable.
 
 Choose **2–9 items** with the count control or Add/Remove. Edit each item's label, URL, SVG icon, optional custom SVG mask and CSS variables. Reducing the count hides the trailing items while retaining their saved data; increasing it restores them. New items receive a label, fragment URL and built-in icon.
 
@@ -46,7 +46,22 @@ Controls update generated code while keeping manually edited drafts available. T
 
 ## Configuration and npm
 
-The package is private and unpublished. Test it locally with `npm pack`; use the resulting tarball in a consuming app. No package publication is performed by the build.
+The package is configured for public npm publication as `pandora-box-ui@0.2.0`. Metadata includes the repository, root demo homepage, author, issue tracker, license and public registry settings. Builds, tests and packing do not publish it.
+
+### Publish to npm
+
+Create an npm account, enable two-factor authentication, and confirm that your account can use the package name. From this source checkout, run each command after the preceding command succeeds:
+
+```powershell
+npm.cmd login --registry=https://registry.npmjs.org/
+npm.cmd whoami
+npm.cmd run prepublishOnly
+npm.cmd pack --dry-run
+npm.cmd publish --access public
+npm.cmd view pandora-box-ui version
+```
+
+No `private` field needs to be removed. The `prepublishOnly` hook builds the CSS, runs Node tests and checks metadata/exports before publication. See [docs/PUBLISHING.md](docs/PUBLISHING.md) for the complete first-release and update workflow.
 
 ```text
 my-site/

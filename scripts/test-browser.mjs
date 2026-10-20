@@ -46,8 +46,10 @@ try {
   const page = await context.newPage();
   page.on('pageerror', error => errors.push(error.message));
   await page.route('https://cdn.jsdelivr.net/**',route=>route.abort());
-  await page.goto(url+'/demo/');
+  await page.goto(url+'/');
   await page.waitForFunction(()=>window.PandoraStudio);
+  check('Root URL serves the Playground directly',new URL(page.url()).pathname==='/' && await page.locator('#panel-code').count()===1);
+  check('Fresh UI and accessibility labels are English-only',await page.evaluate(()=>document.documentElement.lang==='en'&&!/\p{Script=Cyrillic}/u.test(document.documentElement.outerHTML)));
   check('Fresh Playground uses the supplied Obsidian/Solar Cutout defaults',await page.evaluate(()=>{const s=PandoraPlayground.getState();return s.metal==='obsidian'&&s.palette==='solar'&&s.textMode==='cutout'&&s.iconMode==='cutout'&&s.fontSize===60&&s.offset===-12&&s.overlap===1.5&&s.maskScale===.95;}));
   check('Fresh preview CSS matches every supplied default token',await page.locator('#menu').evaluate((el,tokens)=>Object.entries(tokens).every(([name,value])=>getComputedStyle(el).getPropertyValue(name).trim()===value),defaultTokens()));
   await page.locator('.scene-panel').screenshot({path:path.join(out,'default-theme.png')});
@@ -204,7 +206,7 @@ try {
   // Exercise the real CDN-backed Monaco engine in a separate clean session.
   const online=await browser.newContext({viewport:{width:1440,height:1000}});
   const monacoPage=await online.newPage(); monacoPage.on('pageerror',error=>errors.push(error.message));
-  await monacoPage.goto(url+'/demo/');
+  await monacoPage.goto(url+'/');
   try {
     await monacoPage.waitForFunction(()=>document.querySelector('#monaco-container').classList.contains('ready'),{},{timeout:30000});
     check('Real Monaco loads with three editable models',await monacoPage.evaluate(()=>monaco.editor.getModels().length===3 && monaco.editor.getEditors()[0].getOption(monaco.editor.EditorOption.readOnly)===false));
@@ -220,6 +222,13 @@ try {
     passed.push('All real Monaco tabs remain editable');
   } catch(error) { if (error.name!=='TimeoutError') throw error; passed.push('Monaco CDN unavailable: fallback exercised; real engine unverified'); }
   await online.close();
+  const legacyContext=await browser.newContext();
+  const legacyPage=await legacyContext.newPage();
+  await legacyPage.route('https://cdn.jsdelivr.net/**',route=>route.abort());
+  await legacyPage.goto(url+'/demo/');
+  await legacyPage.waitForFunction(()=>window.PandoraStudio);
+  check('Old demo URL redirects to the root Playground',new URL(legacyPage.url()).pathname==='/');
+  await legacyContext.close();
   assert.deepEqual(errors,[],'No browser runtime errors');
   await writeFile(path.join(out,'results.json'),JSON.stringify({passed,errors},null,2));
   console.log(`OK: ${passed.length} browser checks\n${passed.join('\n')}\nArtifacts: .tmp/browser-results/`);

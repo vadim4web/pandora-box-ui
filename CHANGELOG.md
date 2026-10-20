@@ -2,6 +2,9 @@
 
 ## 0.2.0
 
+- Served the complete Playground at the repository root, retained an old-URL redirect, and translated UI labels, accessibility text, runtime notices and validation errors to English.
+- Prepared public npm metadata, normalized the CLI bin path, added pre-publication build/test checks, and documented first publication and later releases in English.
+
 - Applied the supplied Obsidian/Solar Cutout theme as the shared Playground/CSS default, including 60px typography, −12% hover movement, 1.5px overlap, independent colors and 0.95 mask scale. Reset uses the new defaults while saved drafts remain available.
 
 - Added independent Normal, Clip and true alpha Cutout modes for text and icons, embedded SVG masks and mask scale/position/opacity controls.
