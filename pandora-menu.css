@@ -27,7 +27,7 @@
   --_pandora-menu-depth-rise: 0.4336708882;
   --_pandora-menu-side-scale: 0.9681476404;
 
-  font-family: 'Times New Roman', Times, serif;
+  font-family:Georgia, 'Times New Roman', Times, serif;
   font-weight: bolder;
   /* Original landscape line box: 55px at a 48px font size. */
   line-height: calc(55 / 48);
