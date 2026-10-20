@@ -37,4 +37,6 @@ Optional exact-color overrides are `--pandora-menu-top`, `--pandora-menu-side`, 
 
 The menu uses `em` dimensions so its faces scale together. Keep the top-face correction `calc(100% + 0.125em - 1px)` and transform order when changing the implementation. The demo's `body` and scene both match the viewport width; mobile text inflation is controlled in `demo.css`.
 
+Adjacent items overlap by `--pandora-menu-item-overlap` (default `1px`). Set it to `0px` for the original spacing, or adjust it on a menu instance to tune row density.
+
 Navigation destinations, keyboard interaction, dynamic item generation and package exports belong to the library implementation step.

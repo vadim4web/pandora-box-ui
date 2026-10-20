@@ -17,6 +17,7 @@
   --pandora-menu-accent-hue: 180;
   --pandora-menu-accent-lightness: 28%;
   --pandora-menu-accent-saturation: 80%;
+  --pandora-menu-item-overlap: 1px;
   --pandora-menu-hover-offset: -8%;
   --pandora-menu-move-duration: 0.857s;
   --pandora-menu-color-duration: 1s;
@@ -59,6 +60,10 @@
     background-color var(--pandora-menu-color-duration),
     box-shadow var(--pandora-menu-color-duration);
   cursor: pointer;
+}
+
+.pandora-menu__item + .pandora-menu__item {
+  margin-top: calc(-1 * var(--pandora-menu-item-overlap));
 }
 
 /* Side faces share their item's stacking order and geometry in every state. */
