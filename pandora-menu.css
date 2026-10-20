@@ -72,7 +72,7 @@
   z-index: inherit;
   content: "";
   top: 0;
-  left: calc(-38% - 0.02em);
+  left: calc(-38% - 0.02em - 1px);
   width: 50%;
   height: calc(100% + 2px);
   background-color: var(--_pandora-menu-side);
