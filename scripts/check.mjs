@@ -7,5 +7,5 @@ for (const [subpath, target] of Object.entries(pkg.exports)) {
   const data = readFileSync(path.join(root, target), 'utf8');
   if (!data.trim()) throw Error(`Empty export: ${subpath}`);
 }
-if (!pkg.private) throw Error('Release is intentionally private; verify npm name before removing private.');
-console.log('All CSS exports exist; release remains unpublished/private.');
+if (pkg.private === true) console.log('All CSS exports exist; private:true currently blocks npm publication.');
+else console.log('All CSS exports exist; npm publication is enabled in package metadata.');

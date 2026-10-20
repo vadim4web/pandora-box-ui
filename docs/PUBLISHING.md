@@ -2,6 +2,40 @@
 
 The package is private and unpublished. `pandora-box-ui` is a provisional npm name. Before publishing, verify an available name/scope, confirm the repository/homepage metadata, verify the packed artifact, and deliberately remove `"private": true`. Building or packing does not publish a package.
 
+## Publish the demo
+
+The live Playground is [https://vadim4web.github.io/pandora-box-ui/demo/](https://vadim4web.github.io/pandora-box-ui/demo/). GitHub Pages publishes the root of the `main` branch; pushing updates to `demo/`, `src/` and `scripts/menu-model.mjs` updates the demo after the Pages build finishes. The root URL retains the earlier prototype.
+
+## First npm publication
+
+Create an npm account and enable two-factor authentication. Interactive publication requires 2FA; see [npm's publishing authentication requirements](https://docs.npmjs.com/requiring-2fa-for-package-publishing-and-settings-modification/).
+
+From the source checkout, use these commands in Windows PowerShell:
+
+```powershell
+npm.cmd login
+npm.cmd whoami
+npm.cmd view pandora-box-ui version --registry=https://registry.npmjs.org/
+```
+
+The registry returned 404 for `pandora-box-ui` on 20 October 2026. A 404 means there is no visible registered package under that name; it does not reserve the name. If a package now exists, verify that your npm account owns it or choose an available name before publishing. Your npm username can differ from your GitHub username.
+
+When the package name is confirmed:
+
+```powershell
+npm.cmd pkg delete private
+npm.cmd run build
+npm.cmd test
+npm.cmd run check
+npm.cmd pack --dry-run
+npm.cmd publish --access public
+npm.cmd view pandora-box-ui version
+```
+
+Run each command after the preceding command succeeds. `npm publish` publishes version `0.2.0`; complete the npm authentication/2FA prompt. The project remains `private:true` until you explicitly remove that property. No npm publication is performed by the demo deployment.
+
+After publishing, commit the package metadata change. For a later release, increment `version` before publishing; an already published name/version cannot be reused. The current CLI/postinstall assumes the unscoped `pandora-box-ui` installation path, so a scoped rename also requires updating that path and documenting the scoped imports.
+
 ## Separate runtime and development tools
 
 The runtime is the CSS component and its presets. `dist/pandora-box-ui.css` and `dist/pandora-box-ui.base.css` are self-contained base stylesheets. Generated per-item SVG masks are CSS data URLs. Application HTML contains navigation links, label spans and SVG icons. Production pages need no JavaScript, Monaco, mask generator or Playground code.

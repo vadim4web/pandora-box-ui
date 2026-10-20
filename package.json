@@ -6,7 +6,7 @@
     "type": "git",
     "url": "git+https://github.com/vadim4web/pandora-box-ui.git"
   },
-  "homepage": "https://github.com/vadim4web/pandora-box-ui#readme",
+  "homepage": "https://vadim4web.github.io/pandora-box-ui/demo/",
   "version": "0.2.0",
   "description": "CSS-only pseudo-3D menu with alpha cutouts, editable items and a standalone Monaco playground",
   "type": "module",

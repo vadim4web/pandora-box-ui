@@ -4,6 +4,8 @@ A CSS-only pseudo-3D navigation menu with independent idle metals, hover palette
 
 Repository: [vadim4web/pandora-box-ui](https://github.com/vadim4web/pandora-box-ui). The current Playground is in `demo/`; the earlier root-level prototype is retained for compatibility.
 
+**Live demo:** [PandoraBox UI Playground](https://vadim4web.github.io/pandora-box-ui/demo/).
+
 ## Playground
 
 From this source checkout, run `npm run demo` and open `http://localhost:8765/demo/`. In Windows PowerShell, use `npm.cmd` if local execution policy blocks `npm.ps1`. Alternatively serve `demo/index.html` with VS Code Live Server. A custom static server must serve `.mjs` files with a JavaScript MIME type. The first panel, **Code · Monaco Editor**, starts open. Other settings remain collapsible. Monaco loads from a pinned CDN; an editable textarea retains Apply, Save and import/export when the CDN is unavailable.
